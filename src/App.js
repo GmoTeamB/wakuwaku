@@ -26,7 +26,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/calendar" element={<Calendar/>}/>
+            <Route path="/calendar" element={<Calendar account={account}/>}/>
             <Route path="/map" element={<GoogleMap/>} />
         </Routes>
       </BrowserRouter>

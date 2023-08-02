@@ -79,7 +79,9 @@ const thisMonth = () => {
       "0"
     )}`;
   };
-const Calendar = () => {
+
+// props = { account: { accessToken, username, ... } }
+const Calendar = (props) => {
   const [events, setEvents] = useState([
     // 初期のイベントデータ（必要に応じてカスタマイズしてください）
     { title: 'イベント1', start: '2023-08-02T10:00:00', end: '2023-08-02T12:00:00' },
