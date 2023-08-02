@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import SignIn from "./SignIn";
+import GoogleMap from "./components/map";
+import './App.css';
 
 function Home() {
   return (
@@ -23,6 +25,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home/>}/>
+            <Route path="/map" element={<GoogleMap/>} />
         </Routes>
       </BrowserRouter>
     );
