@@ -121,7 +121,7 @@ const AskAboutInterestComponent = () => {
         }
 
         localStorage.setItem('selectedPlaceType', JSON.stringify(data));
-        navigate("/map");
+        navigate("/");
     }
 
     return (

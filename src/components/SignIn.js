@@ -35,6 +35,8 @@ function SignIn(props) {
         } else {
             console.log(account);
         }
+
+        window.history.pushState("", "", "/select");
     }
 
     return (

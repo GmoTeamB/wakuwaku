@@ -6,21 +6,7 @@ import Calendar from "./Calendar/Calendar";
 import AskAboutInterestComponent from "./components/AskAboutInterestComponent";
 import SignIn from "./components/SignIn";
 import GoogleMap from "./components/map";
-import { readCalendar } from "./lib/graph";
-
-function Home() {
-  async function onClick() {
-    const data = await readCalendar();
-    console.log(data);
-  }
-
-  return (
-    <>
-      <p>Hello World!!</p>
-      <button onClick={onClick}>get calendar</button>
-    </>
-  );
-}
+import Home from "./components/Home";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -40,7 +26,7 @@ function App() {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route path="/" element={<Home account={account}/>}/>
           <Route path="/calendar" element={<Calendar account={account} />} />
           <Route path="/select" element={<AskAboutInterestComponent />} />
           <Route path="/map" element={<GoogleMap/>} />
