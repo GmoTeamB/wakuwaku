@@ -112,9 +112,9 @@ const AscAboutInterestComponent = () => {
 
     const onClickForStoreLocalStorage = ()  => {
 
-        var data = {};
+        let data = {};
         
-        for (var i = 0; i < selectedPlaceTag.length; i++) {
+        for (let i = 0; i < selectedPlaceTag.length; i++) {
             data[selectedPlaceTag[i]] = PLACE_TAG.get(selectedPlaceTag[i])
         }
 
