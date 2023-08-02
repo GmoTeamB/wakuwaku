@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Routes, Route, Navigate } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 import SignIn from "./SignIn";
 
 function Home() {
@@ -17,12 +18,17 @@ function App() {
     console.log(account);
   }, [account]);
 
-  return (
-    <Routes>
-        <Route path="/" element={ loggedIn ? <Home /> : <Navigate replace to="/signin"/>}/>
-        <Route path="/signin" element={<SignIn onSuccess={setAccount}/>}/>
-    </Routes>
-  );
+  if (loggedIn) {
+    return (
+      <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Home/>}/>
+        </Routes>
+      </BrowserRouter>
+    );
+  } else {
+    return (<SignIn onSuccess={setAccount}/>);
+  }
 }
 
 export default App;

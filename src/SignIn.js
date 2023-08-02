@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { signIn } from "./login";
 
 const divStyle = {
@@ -19,8 +18,6 @@ const btnStyle = {
 };
 
 function SignIn(props) {
-    const navigate = useNavigate();
-
     async function btnClick() {
         const account = await signIn();
 
@@ -38,8 +35,6 @@ function SignIn(props) {
         } else {
             console.log(account);
         }
-
-        navigate("/");
     }
 
     return (
