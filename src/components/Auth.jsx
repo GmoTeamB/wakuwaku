@@ -14,7 +14,11 @@ function Auth() {
     if (loggedIn) {
         return (<App account={account}/>);
     } else {
-        return (<SignIn onSuccess={setAccount} redirect="/"/>);
+        if (window.location.pathname !== "/signin") {
+            window.history.pushState("", "", "/signin");
+        } else {
+            return (<SignIn onSuccess={setAccount} redirect="/"/>);
+        }
     }
 }
 
