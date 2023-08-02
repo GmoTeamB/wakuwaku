@@ -79,7 +79,14 @@ const thisMonth = () => {
       "0"
     )}`;
   };
-const Calendar = () => {
+
+
+function aaa(){
+  
+}
+
+// props = { account: { accessToken, username, ... } }
+const Calendar = (props) => {
   const [events, setEvents] = useState([
     // 初期のイベントデータ（必要に応じてカスタマイズしてください）
     { title: 'イベント1', start: '2023-08-02T10:00:00', end: '2023-08-02T12:00:00' },
@@ -93,30 +100,24 @@ const Calendar = () => {
 
     for (const scheduleItem of json.value[0].scheduleItems) {
       if (scheduleItem.status === "Busy") {
-        
-          startDateTime = scheduleItem.start.dateTime;
-          console.log("Start Date and Time:", startDateTime);
-          break; // 最初の Busy スケジュールアイテムを見つけたらループを終了
-      }
-    }
-    for (const scheduleItem of json.value[0].scheduleItems) {
-      if (scheduleItem.status === "Busy") {
           startDateTime = scheduleItem.start.dateTime;
           endDateTime = scheduleItem.end.dateTime;
-          console.log("Start Date and Time:", startDateTime);
-          break; // 最初の Busy スケジュールアイテムを見つけたらループを終了
+          
+      }
+      if(scheduleItem.status === "Tentative"){
+        startDateTime = scheduleItem.start.dateTime;
+        endDateTime = scheduleItem.end.dateTime;
+      }
+      if (title) {
+        const newEvent = {
+          title,
+          start: startDateTime,
+          end: endDateTime,
+        };
+        setEvents([...events, newEvent]);
       }
     }
-    if (title) {
-      const newEvent = {
-        title,
-        start: startDateTime,
-        end: endDateTime,
-      };
-      setEvents([...events, newEvent]);
-    }
   };
-  
 
   return (
     <>
