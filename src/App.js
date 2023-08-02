@@ -30,6 +30,11 @@ function App() {
     console.log(account);
   }, [account]);
 
+  // TODO: delete this
+  if (window.location.pathname == "/map") {
+    return (<GoogleMap/>);
+  }
+
   if (loggedIn) {
     return (
       <BrowserRouter>
