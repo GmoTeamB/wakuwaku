@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 const MapBase = () => {
   const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState();
   //ユーザーが選択したプレイスタイプの辞書をlocalStorageから取得
   const placeTypesJson = localStorage.getItem("selectedPlaceType")
   const placeTypesDict = JSON.parse(placeTypesJson);
@@ -70,6 +71,7 @@ const MapBase = () => {
               placeId: place.place_id,
             },
             (result, status) => {
+              setSelectedPlace(result)
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 infowindow.setContent(`
                   <div style="text-align: center;">
@@ -104,8 +106,12 @@ const MapBase = () => {
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }, [placeType]);
   const addSchedule = () => {
+          if (!selectedPlace) {
+            alert("予定を追加する場所を選択してください。");
+            return;
+          }
           if (window.confirm("予定を追加しますか？")) {
-            console.log("確認")
+            console.log(selectedPlace.name)
             //以下でMicrosoftGraphで予定を追加？
           }
         };
