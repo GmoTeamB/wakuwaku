@@ -107,7 +107,6 @@ const AskAboutInterestComponent = () => {
     const handleSelectedPlaceTag = (placeTag) => {
         if (selectedPlaceTag.indexOf(placeTag) < 0){
             selectedPlaceTag.push(placeTag);
-            console.log(selectedPlaceTag);
         }
     }
 
@@ -129,7 +128,7 @@ const AskAboutInterestComponent = () => {
         <>
             <div>
                 {[...PLACE_TAG.keys()].map((value) => {
-                    console.log(value);
+
 
                     return (<InterestPlaceCheckBoxComponent placeTag={value} setValue={handleSelectedPlaceTag}/>)
                 })}

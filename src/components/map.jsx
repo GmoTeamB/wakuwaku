@@ -2,7 +2,7 @@ import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 
 const MapBase = () => {
-  const [placeType, setPlaceType] = useState("restaurant");
+  const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
   //ユーザーが選択したプレイスタイプの辞書をlocalStorageから取得
   const placeTypesJson = localStorage.getItem("selectedPlaceType")
@@ -40,13 +40,15 @@ const MapBase = () => {
       };
 			//現在地から一定範囲のtypeに合致する施設にマーカーを立てる
       const service = new window.google.maps.places.PlacesService(map);
-      service.nearbySearch(request, (results, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          for (let i = 0; i < results.length; i++) {
-            createMarker(results[i]);
+      if (placeType) {
+        service.nearbySearch(request, (results, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            for (let i = 0; i < results.length; i++) {
+              createMarker(results[i]);
+            }
           }
-        }
-			});
+        });
+      }
 			//クリックしたら施設情報が表示されるマーカーの作成
 			const markersWithInfowindows = [];
       const createMarker = (place) => {
