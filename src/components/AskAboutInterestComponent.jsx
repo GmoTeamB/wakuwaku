@@ -104,9 +104,10 @@ const AskAboutInterestComponent = () => {
     const [selectedPlaceTag, setSelectedPlaceTag] = useState([]);
 
     const handleSelectedPlaceTag = (placeTag) => {
-        if (selectedPlaceTag.indexOf(placeTag) < 0){
-            selectedPlaceTag.push(placeTag);
-            console.log(selectedPlaceTag);
+        if (selectedPlaceTag.find((value) => (value == placeTag)) === undefined){
+            setSelectedPlaceTag([...selectedPlaceTag, placeTag]);
+        } else {
+            setSelectedPlaceTag(selectedPlaceTag.filter((value) => (value != placeTag)))
         }
     }
 
@@ -119,15 +120,12 @@ const AskAboutInterestComponent = () => {
         }
 
         localStorage.setItem('selectedPlaceType', JSON.stringify(data));
-        console.log(JSON.stringify(data));
-        console.log(data);
     }  
 
     return (
         <>
             <div> 
                 {[...PLACE_TAG.keys()].map((value) => {
-                    console.log(value);
 
                     return (<InterestPlaceCheckBoxComponent placeTag={value} setValue={handleSelectedPlaceTag}/>)
                 })}

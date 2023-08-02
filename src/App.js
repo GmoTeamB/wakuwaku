@@ -5,6 +5,7 @@ import SignIn from "./components/SignIn";
 import GoogleMap from "./components/map";
 import Calendar from "./Calendar/Calendar";
 import './App.css';
+import AskAboutInterestComponent from "./components/AskAboutInterestComponent";
 
 function Home() {
   return (
@@ -21,19 +22,20 @@ function App() {
     console.log(account);
   }, [account]);
 
-  if (loggedIn) {
+  //if (loggedIn) {
     return (
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home/>}/>
+            <Route path="/select" element={<AskAboutInterestComponent/>}/>
             <Route path="/calendar" element={<Calendar account={account}/>}/>
             <Route path="/map" element={<GoogleMap/>} />
         </Routes>
       </BrowserRouter>
     );
-  } else {
-    return (<SignIn onSuccess={setAccount}/>);
-  }
+  //} else {
+    //return (<SignIn onSuccess={setAccount}/>);
+  //}
 }
 
 export default App;
