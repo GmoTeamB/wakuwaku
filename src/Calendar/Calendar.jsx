@@ -1,76 +1,14 @@
-import React ,{useState}from 'react'
+import React ,{useEffect, useState}from 'react'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
 import jaLocale from '@fullcalendar/core/locales/ja';
-
-const json = 
-{
-    "@odata.context":"https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.scheduleInformation)",
-    "value":[
-        {
-            "scheduleId":"AlexW@contoso.OnMicrosoft.com",
-            "availabilityView":"111111002222222200000000000000000000",
-            "scheduleItems":[
-                {
-                    "status":"Tentative",
-                    "start":{
-                        "dateTime":"2018-08-06T09:00:00.0000000",
-                        "timeZone":"Pacific Standard Time"
-                    },
-                    "end":{
-                        "dateTime":"2018-08-06T10:30:00.0000000",
-                        "timeZone":"Pacific Standard Time"
-                    }
-                },
-                {
-                    "status":"Busy",
-                    "start":{
-                        "dateTime":"2023-08-02T11:00:00.0000000",
-                        "timeZone":"Pacific Standard Time"
-                    },
-                    "end":{
-                        "dateTime":"2023-08-02T13:00:00.0000000",
-                        "timeZone":"Pacific Standard Time"
-                    }
-                }
-            ],
-            "workingHours":{
-                "daysOfWeek":[
-                    "monday",
-                    "tuesday",
-                    "wednesday",
-                    "thursday",
-                    "friday"
-                ],
-                "startTime":"08:00:00.0000000",
-                "endTime":"17:00:00.0000000",
-                "timeZone":{
-                    "@odata.type":"#microsoft.graph.customTimeZone",
-                    "bias":480,
-                    "name":"Customized Time Zone",
-                    "standardOffset":{
-                        "time":"02:00:00.0000000",
-                        "dayOccurrence":1,
-                        "dayOfWeek":"sunday",
-                        "month":11,
-                        "year":0
-                    },
-                    "daylightOffset":{
-                        "daylightBias":-60,
-                        "time":"02:00:00.0000000",
-                        "dayOccurrence":2,
-                        "dayOfWeek":"sunday",
-                        "month":3,
-                        "year":0
-                    }
-                }
-            }
-        }
-    ]
-}
+import { readCalendar } from '../lib/graph';
 
 
+console.log("start readCalendar")
+
+// console.log("%o",JSON.stringify(json))
 
 const thisMonth = () => {
     const today = new Date();
@@ -82,36 +20,51 @@ const thisMonth = () => {
 
 // props = { account: { accessToken, username, ... } }
 const Calendar = (props) => {
+  let json = readCalendar()
   const [events, setEvents] = useState([
     // 初期のイベントデータ（必要に応じてカスタマイズしてください）
-    { title: 'イベント1', start: '2023-08-02T10:00:00', end: '2023-08-02T12:00:00' },
-    { title: 'イベント2', start: '2023-08-03T14:00:00', end: '2023-08-03T16:00:00' },
+    
   ]);
+  useEffect(() => {
+    (async function() {
+      let json = await readCalendar();
+      console.log("%o",json)
+      let title = "test"
+      let startDateTime  = ""
+      let endDateTime  = ""
+      let eventAdd = []
+      console.log(json.value[0].scheduleItems)
 
-  const handleAddEvent = () => {
-    let title = "test"
-    let startDateTime  = ""
-    let endDateTime  = ""
-
-    for (const scheduleItem of json.value[0].scheduleItems) {
-      if (scheduleItem.status === "Busy") {
+      for (const scheduleItem of json.value[0].scheduleItems) {
+        title = scheduleItem.subject
+        console.log(scheduleItem.status)
+        if (scheduleItem.status === "busy") {
+            console.log(scheduleItem.start.dateTime)
+            startDateTime = scheduleItem.start.dateTime;
+            endDateTime = scheduleItem.end.dateTime;
+        }
+        if(scheduleItem.status === "tentative"){
           startDateTime = scheduleItem.start.dateTime;
           endDateTime = scheduleItem.end.dateTime;
-          
-      }
-      if(scheduleItem.status === "Tentative"){
-        startDateTime = scheduleItem.start.dateTime;
-        endDateTime = scheduleItem.end.dateTime;
-      }
-      if (title) {
-        const newEvent = {
-          title,
-          start: startDateTime,
-          end: endDateTime,
-        };
-        setEvents([...events, newEvent]);
-      }
-    }
+        }
+        console.log(startDateTime )
+        if (title) {
+          const newEvent = {
+            title,
+            start: startDateTime,
+            end: endDateTime,
+          };
+          eventAdd.push(newEvent)
+        }
+      } 
+      console.log(eventAdd)
+      setEvents([...events, ...eventAdd]);
+
+    })();
+  }, []);
+
+  const handleAddEvent = () => {
+    
   };
 
   return (
