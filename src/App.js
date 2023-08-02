@@ -1,10 +1,21 @@
+import { Route, Routes } from "react-router";
 import './App.css';
-import AscAboutInterestComponent from './AscAboutInterestComponent';
-import logo from './logo.svg';
+import GoogleMap from "./components/map";
+
+function Home() {
+  return (
+    <p>Hello World!!</p>
+  );
+}
 
 function App() {
   return (
-    <AscAboutInterestComponent/>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/map" element={<GoogleMap/>} />
+      </Routes>
+    </>
   );
 }
 
