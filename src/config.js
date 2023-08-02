@@ -5,24 +5,12 @@ import { LogLevel } from "@azure/msal-browser";
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
  */
 
-const auth_ms = {
-    clientId: "9c83c894-5da4-4176-8364-361969ac314a",
-    authority: "https://login.microsoftonline.com/c210b6f6-c011-4de4-a088-256a53856014",
-    redirectUri: "http://localhost:3000/",
-}
-const auth_app = {
-    clientId: "ef1af11b-93db-4759-86dc-2406d18515d6",
-    authority: "https://login.microsoftonline.com/c210b6f6-c011-4de4-a088-256a53856014",
-    redirectUri: "http://localhost:3000/",
-};
-const auth_app2 = {
-    clientId: "43cbb628-b8f8-4e22-b91b-430c37b7d0dc",
-    authority: "https://login.microsoftonline.com/c210b6f6-c011-4de4-a088-256a53856014",
-    redirectUri: "http://localhost:3000/",
-};
-
 export const msalConfig = {
-    auth: auth_ms,
+    auth: {
+        clientId: process.env.REACT_APP_AZURE_CLIENT_ID,
+        authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID}`,
+        redirectUri: process.env.REACT_APP_AZURE_REDIRECT_URL
+    },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
