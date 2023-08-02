@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import InterestPlaceCheckBoxComponent from './InterestPlaceCheckBoxComponent.jsx';
 
-const AscAboutInterestComponent = () => {
+const AskAboutInterestComponent = () => {
     const PLACE_TAG = new Map([
         ["会計", "accounting"],
         ["空港", "airport"],
@@ -138,4 +138,4 @@ const AscAboutInterestComponent = () => {
     );
 }
 
-export default AscAboutInterestComponent
+export default AskAboutInterestComponent
