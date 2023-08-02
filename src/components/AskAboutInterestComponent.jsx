@@ -104,6 +104,10 @@ const AskAboutInterestComponent = () => {
 
     let selectedPlaceTag = [];
 
+    function setSelectedPlaceTag(value) {
+        selectedPlaceTag = value;
+    }
+
     const handleSelectedPlaceTag = (placeTag) => {
         if (selectedPlaceTag.find((value) => (value == placeTag)) === undefined){
             setSelectedPlaceTag([...selectedPlaceTag, placeTag]);
