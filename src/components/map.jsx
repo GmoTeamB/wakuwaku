@@ -4,17 +4,12 @@ import React, { useEffect, useState } from "react";
 const MapBase = () => {
   const [placeType, setPlaceType] = useState("restaurant");
   const [selectedButton, setSelectedButton] = useState(null);
-  //最終的にはユーザーが選択したタイプの辞書をlocalStorageから取得
-  const typesDict = {
-    映画館: "movie_theater",
-    飲食店: "restaurant",
-    カフェ: "cafe",
-    博物館: "museum",
-    美容室: "beauty_salon"
-  }
-  const keys = Object.keys(typesDict);
+  //ユーザーが選択したプレイスタイプの辞書をlocalStorageから取得
+  const placeTypesJson = localStorage.getItem("selectedPlaceType")
+  const placeTypesDict = JSON.parse(placeTypesJson);
+  const keys = Object.keys(placeTypesDict);
   const handleSelectType = (key) => {
-    setPlaceType(typesDict[key]);
+    setPlaceType(placeTypesDict[key]);
     setSelectedButton(key);
   };
   useEffect(() => {

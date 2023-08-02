@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router";
 import './App.css';
+import AskAboutInterestComponent from "./components/AskAboutInterestComponent";
 import GoogleMap from "./components/map";
 
 function Home() {
@@ -13,6 +14,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/select" element={<AskAboutInterestComponent />} />
         <Route path="/map" element={<GoogleMap/>} />
       </Routes>
     </>
