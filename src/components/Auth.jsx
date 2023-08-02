@@ -17,7 +17,7 @@ function Auth() {
         if (window.location.pathname !== "/signin") {
             window.history.pushState("", "", "/signin");
         } else {
-            return (<SignIn onSuccess={setAccount} redirect="/"/>);
+            return (<SignIn onSuccess={setAccount} redirect="/select"/>);
         }
     }
 }
