@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const GoogleMap = () => {
-  const [placeType, setPlaceType] = useState(null);
+  const [placeType, setPlaceType] = useState("restaurant");
   const [selectedButton, setSelectedButton] = useState(null);
   //最終的にはユーザーが選択したタイプの辞書をlocalStorageから取得
   const typesDict = {
