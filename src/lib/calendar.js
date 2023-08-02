@@ -1,5 +1,5 @@
 import { getAccount } from "./login";
-import { getGraphClient } from "./graph";
+import { getGraphClient } from "../graph";
 
 export async function getCalendar() {
     const account = getAccount();

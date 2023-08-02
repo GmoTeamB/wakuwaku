@@ -1,4 +1,4 @@
-import { signIn } from "./login";
+import { signIn } from "../lib/login";
 
 const divStyle = {
     display: "flex",
