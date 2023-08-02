@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import InterestPlaceCheckBoxComponent from './InterestPlaceCheckBoxComponent.jsx';
 
 const AskAboutInterestComponent = () => {
@@ -100,8 +100,9 @@ const AskAboutInterestComponent = () => {
         ["動物病院", "veterinary_care"],
         ["動物園", "zoo"]
     ]);
+    const navigate = useNavigate();
 
-    const [selectedPlaceTag, setSelectedPlaceTag] = useState([]);
+    let selectedPlaceTag = [];
 
     const handleSelectedPlaceTag = (placeTag) => {
         if (selectedPlaceTag.find((value) => (value == placeTag)) === undefined){
@@ -111,23 +112,27 @@ const AskAboutInterestComponent = () => {
         }
     }
 
-    const onClickForStoreLocalStorage = ()  => {
-
+    const onClickForStoreLocalStorage = () => {
+        const placeTypesDict = localStorage.getItem("selectedPlaceType");
+        if (placeTypesDict !== null) {
+            localStorage.removeItem("selectedPlaceType");
+        }
         let data = {};
-        
         for (let i = 0; i < selectedPlaceTag.length; i++) {
             data[selectedPlaceTag[i]] = PLACE_TAG.get(selectedPlaceTag[i])
         }
 
         localStorage.setItem('selectedPlaceType', JSON.stringify(data));
-    }  
+        navigate("/");
+    }
 
     return (
         <>
-            <div> 
+            <div>
                 {[...PLACE_TAG.keys()].map((value) => {
 
-                    return (<InterestPlaceCheckBoxComponent placeTag={value} setValue={handleSelectedPlaceTag}/>)
+
+                    return (<InterestPlaceCheckBoxComponent key={value} placeTag={value} setValue={handleSelectedPlaceTag}/>)
                 })}
 
                 <label><input type='button' onClick={onClickForStoreLocalStorage}></input>決定</label>

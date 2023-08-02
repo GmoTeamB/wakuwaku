@@ -120,11 +120,17 @@ const Calendar = (props) => {
   };
   
 
+  const divStyle = {
+    display: "flex",
+    flexDirection: "column",
+  };
+
   return (
-    <>
-      <button onClick={handleAddEvent}>イベントを追加</button>
+    <div style={divStyle}>
+      <button onClick={handleAddEvent} style={{flex: 0, width: "max-content"}}>イベントを追加</button>
 
       <FullCalendar
+          height="100%"
           plugins={[ dayGridPlugin ,timeGridPlugin]}
           initialView="timeGridDay"
           locales={[jaLocale]}
@@ -136,7 +142,7 @@ const Calendar = (props) => {
           }}
           events={events}
       />
-     </>
+     </div>
   )
 }
 
