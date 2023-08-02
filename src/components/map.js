@@ -1,6 +1,7 @@
+import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 
-const GoogleMap = () => {
+const MapBase = () => {
   const [placeType, setPlaceType] = useState("restaurant");
   const [selectedButton, setSelectedButton] = useState(null);
   //最終的にはユーザーが選択したタイプの辞書をlocalStorageから取得
@@ -131,5 +132,13 @@ const GoogleMap = () => {
 		</div>
 	);
 };
+
+const GoogleMap = () => {
+  return (
+    <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
+      <MapBase/>
+    </LoadScript>
+  )
+}
 
 export default GoogleMap;
