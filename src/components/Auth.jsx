@@ -3,6 +3,8 @@ import SignIn from "./SignIn";
 import App from "../App";
 import { refreshToken } from "../lib/login";
 
+const REFRESH_INTERVAL_MS = 10 * 60 * 1000; // 10min
+
 function Auth() {
     const [account, setAccount] = useState(null);
     const loggedIn = useMemo(() => !!(account && account.accessToken), [account]);
@@ -13,7 +15,7 @@ function Auth() {
             setTimeout(async () => {
                 const accessToken = await refreshToken(account);
                 setAccount({ ...account, accessToken });
-            }, 5*1000);
+            }, REFRESH_INTERVAL_MS);
         }
     }, [account]);
 
