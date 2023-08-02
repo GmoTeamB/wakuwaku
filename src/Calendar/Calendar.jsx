@@ -1,10 +1,10 @@
-import React ,{useState}from 'react'
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
 import jaLocale from '@fullcalendar/core/locales/ja';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
+import React, { useState } from 'react';
 
-const json = 
+const json =
 {
     "@odata.context":"https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.scheduleInformation)",
     "value":[
@@ -95,7 +95,7 @@ const Calendar = (props) => {
 
     for (const scheduleItem of json.value[0].scheduleItems) {
       if (scheduleItem.status === "Busy") {
-        
+
           startDateTime = scheduleItem.start.dateTime;
           console.log("Start Date and Time:", startDateTime);
           break; // 最初の Busy スケジュールアイテムを見つけたらループを終了
@@ -118,7 +118,7 @@ const Calendar = (props) => {
       setEvents([...events, newEvent]);
     }
   };
-  
+
 
   const divStyle = {
     display: "flex",
@@ -142,7 +142,7 @@ const Calendar = (props) => {
           }}
           events={events}
       />
-     </div>
+    </div>
   )
 }
 

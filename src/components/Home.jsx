@@ -1,9 +1,9 @@
-import GoogleMap from "./map";
 import Calendar from "../Calendar/Calendar";
+import GoogleMap from "./map";
 
 const divStyle = {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr"
+    gridTemplateColumns: "2fr 3fr"
 };
 
 function Home(props) {
@@ -11,8 +11,8 @@ function Home(props) {
 
     return (
         <div style={divStyle}>
+            <Calendar account={account} />
             <GoogleMap/>
-            <Calendar account={account}/>
         </div>
     )
 }
