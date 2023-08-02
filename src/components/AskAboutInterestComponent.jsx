@@ -130,7 +130,7 @@ const AskAboutInterestComponent = () => {
                 {[...PLACE_TAG.keys()].map((value) => {
 
 
-                    return (<InterestPlaceCheckBoxComponent placeTag={value} setValue={handleSelectedPlaceTag}/>)
+                    return (<InterestPlaceCheckBoxComponent key={value} placeTag={value} setValue={handleSelectedPlaceTag}/>)
                 })}
 
                 <label><input type='button' onClick={onClickForStoreLocalStorage}></input>決定</label>
