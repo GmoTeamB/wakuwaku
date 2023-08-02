@@ -1,5 +1,5 @@
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
-import { msalConfig, loginRequest, tokenRequest } from "./config";
+import { msalConfig, loginRequest, scopes } from "./config";
 
 export const myMSALObj = new PublicClientApplication(msalConfig);
 
@@ -61,7 +61,7 @@ export async function signIn() {
             console.error(error);
         });
     */
-    const res = await myMSALObj.loginPopup(loginRequest);
+    const res = await myMSALObj.loginPopup({ scopes });
     return res?.account;
 }
 

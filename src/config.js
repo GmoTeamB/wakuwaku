@@ -71,6 +71,8 @@ export const tokenRequest = {
     forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
 };
 
+export const scopes = ["User.Read", "Mail.Read", "Calendars.Read"];
+
 // Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",

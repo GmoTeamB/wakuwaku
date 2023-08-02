@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router";
+import { useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router";
+import SignIn from "./SignIn";
 
 function Home() {
   return (
@@ -7,9 +9,17 @@ function Home() {
 }
 
 function App() {
+  const [account, setAccount] = useState(null);
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    console.log("update account");
+    console.log(account);
+  }, [account]);
+
   return (
     <Routes>
-      <Route path="/" element={<Home/>}/>
+        <Route path="/" element={ account ? <Home /> : <Navigate replace to="/signin"/>}/>
+        <Route path="/signin" element={<SignIn onSuccess={setAccount}/>}/>
     </Routes>
   );
 }
