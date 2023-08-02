@@ -11,23 +11,23 @@ console.log("start readCalendar")
 // console.log("%o",JSON.stringify(json))
 
 const thisMonth = () => {
-    const today = new Date();
-    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}`;
-  };
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}`;
+};
 
 // props = { account: { accessToken, username, ... } }
 const Calendar = (props) => {
   let json = readCalendar()
   const [events, setEvents] = useState([
     // 初期のイベントデータ（必要に応じてカスタマイズしてください）
-    
   ]);
   useEffect(() => {
     (async function() {
       let json = await readCalendar();
+      console.log(json.value[0].availabilityView)
       console.log("%o",json)
       let title = "test"
       let startDateTime  = ""
@@ -76,11 +76,6 @@ const Calendar = (props) => {
           initialView="timeGridDay"
           locales={[jaLocale]}
           locale='ja'
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridDay',
-          }}
           events={events}
       />
      </>
