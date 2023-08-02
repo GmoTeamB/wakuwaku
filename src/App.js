@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import SignIn from "./components/SignIn";
 import GoogleMap from "./components/map";
+import Calendar from "./Calendar/Calendar";
 import './App.css';
 
 function Home() {
@@ -25,6 +26,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home/>}/>
+            <Route path="/calendar" element={<Calendar/>}/>
             <Route path="/map" element={<GoogleMap/>} />
         </Routes>
       </BrowserRouter>
