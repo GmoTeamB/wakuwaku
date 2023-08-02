@@ -91,7 +91,6 @@ const Calendar = () => {
     let startDateTime  = ""
     let endDateTime  = ""
 
-z
     for (const scheduleItem of json.value[0].scheduleItems) {
       if (scheduleItem.status === "Busy") {
         
