@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router";
+import { Route, Routes } from "react-router";
+import './App.css';
+import GoogleMap from "./components/map";
 
 function Home() {
   return (
@@ -8,9 +10,12 @@ function Home() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home/>}/>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/map" element={<GoogleMap/>} />
+      </Routes>
+    </>
   );
 }
 
