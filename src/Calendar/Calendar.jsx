@@ -80,11 +80,6 @@ const thisMonth = () => {
     )}`;
   };
 
-
-function aaa(){
-  
-}
-
 // props = { account: { accessToken, username, ... } }
 const Calendar = (props) => {
   const [events, setEvents] = useState([

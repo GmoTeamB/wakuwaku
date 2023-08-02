@@ -5,10 +5,19 @@ import SignIn from "./components/SignIn";
 import GoogleMap from "./components/map";
 import Calendar from "./Calendar/Calendar";
 import './App.css';
+import { readCalendar } from "./lib/graph";
 
 function Home() {
+  async function onClick() {
+    const data = await readCalendar();
+    console.log(data);
+  }
+
   return (
-    <p>Hello World!!</p>
+    <>
+      <p>Hello World!!</p>
+      <button onClick={onClick}>get calendar</button>
+    </>
   );
 }
 
@@ -26,7 +35,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/calendar" element={<Calendar/>}/>
+            <Route path="/calendar" element={<Calendar account={account}/>}/>
             <Route path="/map" element={<GoogleMap/>} />
         </Routes>
       </BrowserRouter>
