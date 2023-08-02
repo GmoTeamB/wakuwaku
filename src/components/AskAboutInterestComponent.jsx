@@ -105,8 +105,10 @@ const AskAboutInterestComponent = () => {
     let selectedPlaceTag = [];
 
     const handleSelectedPlaceTag = (placeTag) => {
-        if (selectedPlaceTag.indexOf(placeTag) < 0){
-            selectedPlaceTag.push(placeTag);
+        if (selectedPlaceTag.find((value) => (value == placeTag)) === undefined){
+            setSelectedPlaceTag([...selectedPlaceTag, placeTag]);
+        } else {
+            setSelectedPlaceTag(selectedPlaceTag.filter((value) => (value != placeTag)))
         }
     }
 
