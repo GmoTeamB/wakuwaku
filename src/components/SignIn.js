@@ -35,6 +35,12 @@ function SignIn(props) {
         } else {
             console.log(account);
         }
+
+        if (props.redirect) {
+            window.history.pushState("", "", props.redirect);
+        } else {
+            window.history.pushState("", "", "/");
+        }
     }
 
     return (
