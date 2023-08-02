@@ -101,3 +101,8 @@ async function getTokenPopup(account, request) {
             }
     });
 }
+
+export async function refreshToken(account) {
+    const request = { ...tokenRequest, account };
+    return myMSALObj.acquireTokenSilent(request).catch(() => null);
+}
