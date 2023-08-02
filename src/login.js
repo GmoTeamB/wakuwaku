@@ -1,5 +1,5 @@
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
-import { msalConfig, loginRequest, scopes } from "./config";
+import { msalConfig, loginRequest, scopes, tokenRequest } from "./config";
 
 export const myMSALObj = new PublicClientApplication(msalConfig);
 
@@ -48,24 +48,19 @@ function handleResponse(response) {
 }
 
 export async function signIn() {
-
-    /**
-     * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
-     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
-     */
-
-    /*
-    myMSALObj.loginPopup(loginRequest)
-        .then(handleResponse)
-        .catch(error => {
-            console.error(error);
-        });
-    */
     const res = await myMSALObj.loginPopup({ scopes });
-    return res?.account;
+    handleResponse(res);
+
+    const account = res?.account;
+
+    if (account) {
+        const token = await getTokenPopup(account, tokenRequest);
+        account.accessToken = token;
+    }
+    return account;
 }
 
-function signOut() {
+async function signOut() {
 
     /**
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
@@ -78,16 +73,16 @@ function signOut() {
         mainWindowRedirectUri: msalConfig.auth.redirectUri
     };
 
-    myMSALObj.logoutPopup(logoutRequest);
+    await myMSALObj.logoutPopup(logoutRequest);
 }
 
-function getTokenPopup(request) {
+async function getTokenPopup(account, request) {
 
     /**
      * See here for more info on account retrieval: 
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
      */
-    request.account = myMSALObj.getAccountByUsername(username);
+    request.account = account;
     
     return myMSALObj.acquireTokenSilent(request)
         .catch(error => {
