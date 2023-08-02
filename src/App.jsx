@@ -4,6 +4,7 @@ import './App.css';
 import Calendar from "./Calendar/Calendar";
 import AskAboutInterestComponent from "./components/AskAboutInterestComponent";
 import GoogleMap from "./components/map";
+import Home from "./components/Home";
 
 function App(props) {
   const { account } = props;
@@ -11,7 +12,7 @@ function App(props) {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<></>}/>
+        <Route path="/" element={<Home account={account}/>}/>
         <Route path="/calendar" element={<Calendar account={account} />} />
         <Route path="/select" element={<AskAboutInterestComponent />} />
         <Route path="/map" element={<GoogleMap/>} />

@@ -104,16 +104,17 @@ const MapBase = () => {
 
 	return (
     <div id="parent-container" style={{
+      display: "flex",
+      flexDirection: "column",
       height: "550px",
       width: "90%",
-      position: "absolute",
       margin: "auto",
       top: "0",
       right: "0",
       bottom: "0",
       left: "0"
     }}>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flex: 0 }}>
         {keys.map((key) => (
           <button
             style={{
@@ -125,16 +126,18 @@ const MapBase = () => {
           </button>
         ))}
       </div>
-      <div id="map" style={{ height: "100%", width: "100%", border: "1px solid #000" }} />
+      <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #000" }} />
 		</div>
 	);
 };
 
 const GoogleMap = () => {
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
-      <MapBase/>
-    </LoadScript>
+    <div>
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
+        <MapBase/>
+      </LoadScript>
+    </div>
   )
 }
 

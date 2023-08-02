@@ -39,7 +39,7 @@ function SignIn(props) {
         if (props.redirect) {
             window.history.pushState("", "", props.redirect);
         } else {
-            window.history.pushState("", "", "/");
+            window.history.pushState("", "", "/select");
         }
     }
 
