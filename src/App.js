@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-
+import Calendar from "./Calendar/Calendar";
 function Home() {
   return (
     <p>Hello World!!</p>
@@ -9,7 +9,7 @@ function Home() {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home/>}/>
+      <Route path="/" element={<Calendar/>}/>
     </Routes>
   );
 }
