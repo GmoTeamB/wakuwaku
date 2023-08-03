@@ -38,7 +38,7 @@ function formatDateTime(dateTime) {
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
-function callMSGraphPostSendCalendar(endpoint, token, callback,title,startTime,freetime) {
+async function callMSGraphPostSendCalendar(endpoint, token,title,startTime,freetime) {
     console.log("aaaaaa")
     console.log(startTime)
     const headers = new Headers();
@@ -76,21 +76,15 @@ function callMSGraphPostSendCalendar(endpoint, token, callback,title,startTime,f
         body: JSON.stringify(body) // JSON形式のデータ
     };
     console.log('request made to Graph API at: ' + new Date().toString());
-    fetch(endpoint, options)
+    return fetch(endpoint, options)
         .then(response => response.json())
-        .then(response => callback(response, endpoint))
         .catch(error => console.log(error));
 }
 
 export async function sendCalendar(title,StartTime,freetime){
-    await new Promise((resolve, reject) => {
-        getTokenPopup(tokenRequest)
-            .then(response => {
-                callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken, resolve,title,StartTime,freetime);
-            }).catch(error => {
-                console.error(error);
-            });
-        });
+    const response = await getTokenPopup(tokenRequest);
+    const result = await callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken,title,StartTime,freetime);
+    return result;
 }
 
 export function getGraphClient(account) {
