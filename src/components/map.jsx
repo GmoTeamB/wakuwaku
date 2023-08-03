@@ -1,12 +1,13 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import ReactDOM from 'react-dom/client';
 import { Button, ButtonGroup } from "react-bootstrap";
 import { sendCalendar } from "../lib/graph";
+import PlaceInfo from "./PlaceInfo";
 
 const MapBase = ({ timeParams, onAddSchedule }) => {
   const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
-  const [selectedPlace, setSelectedPlace] = useState();
   //ユーザーが選択したプレイスタイプの辞書をlocalStorageから取得
   const placeTypesJson = localStorage.getItem("selectedPlaceType")
   const placeTypesDict = JSON.parse(placeTypesJson);
@@ -14,6 +15,21 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
   const handleSelectType = (key) => {
     setPlaceType(placeTypesDict[key]);
     setSelectedButton(key);
+  };
+
+  const addSchedule = async (place) => {
+    if (!place) {
+      alert("予定を追加する場所を選択してください。");
+      return;
+    }
+    if (window.confirm("予定を追加しますか？")) {
+      if (timeParams) {
+        const response = await sendCalendar(place.name, timeParams.startTime, timeParams.freetime);
+        onAddSchedule(response);
+      } else {
+        alert("予定を入れる時間がありません")
+      }
+    }
   };
 
   useEffect(() => {
@@ -80,22 +96,11 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
               placeId: place.place_id,
             },
             (result, status) => {
-              setSelectedPlace(result)
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                infowindow.setContent(`
-                  <div style="text-align: center;">
-                    <p><b>${result.name}</b></p>
-                    <a href=${result.url}>${result.formatted_address}</a>
-                    <p>評価：${result.rating ? result.rating + " / 5" : "評価情報なし"}</p>
-                    <p>電話番号：${result.formatted_phone_number ? '<a href=tel:' + result.formatted_phone_number + '>' + result.formatted_phone_number + '</a>' : "電話番号なし"}</p>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                      ${result.current_opening_hours?.weekday_text?.slice(0, 7).map((item, index) => `
-                        <li key=${index}>${item}</li>
-                      `).join('') || "情報なし"}
-                    </ul>
-                    <p>WEBサイト：${result.website ? '<a href=' + result.website + '>' + result.website + '</a>' : "情報なし"}</p>
-                  </div>
-                `);
+                const element = document.createElement("div");
+                ReactDOM.createRoot(element).render(<PlaceInfo place={result} addSchedule={addSchedule}></PlaceInfo>);
+
+                infowindow.setContent(element);
 								infowindow.open(map, marker);
 								markersWithInfowindows.push({
                     marker: marker,
@@ -114,21 +119,6 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
 		//現在位置の取得
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }, [placeType]);
-  const addSchedule = async () => {
-          if (!selectedPlace) {
-            alert("予定を追加する場所を選択してください。");
-            return;
-          }
-          if (window.confirm("予定を追加しますか？")) {
-            if (timeParams) {
-              const response = await sendCalendar(selectedPlace.name, timeParams.startTime, timeParams.freetime);
-              onAddSchedule(response);
-            } else {
-              alert("予定を入れる時間がありません")
-
-            }
-          }
-        };
 
 	return (
     <div id="parent-container" style={{
@@ -175,9 +165,6 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
         </nav>
       </div>
       <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #808080", borderRadius: "20px" }} />
-      <div style={{textAlign: "right"}}>
-        <button style={{ height: "40px", marginTop: "10px"}} onClick={() => addSchedule()}>予定を追加</button>
-      </div>
 		</div>
 	);
 };
