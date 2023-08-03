@@ -1,7 +1,125 @@
 import { useNavigate } from 'react-router';
-import InterestPlaceCheckBoxComponent from './InterestPlaceCheckBoxComponent.jsx';
+import { useState } from 'react';
+import InterestPlaceTypeCheckBoxComponent from './InterestPlaceTypeCheckBoxComponent.jsx';
+import { useEffect } from 'react';
 
 const AskAboutInterestComponent = () => {
+    const PLACE_TYPE_MAP = new Map([
+        ["交通", [
+            "空港",
+            "バス停",
+            "レンタカー",
+            "ガソリンスタンド",
+            "駅",
+            "駐車場",
+            "地下鉄駅",
+            "タクシー乗り場",
+            "鉄道駅",
+            "乗換駅"
+          ]],
+          ["レジャー", [
+            "アミューズメントパーク",
+            "水族館",
+            "アートギャラリー",
+            "ボーリング場",
+            "キャンプ場",
+            "カジノ",
+            "映画館",
+            "博物館",
+            "ナイトクラブ",
+            "アトリエ",
+            "公園",
+            "RVパーク",
+            "スタジアム",
+            "観光地",
+            "動物園"
+          ]],
+          ["フード", [
+            "パン屋",
+            "バー",
+            "カフェ",
+            "デリバリーサービス",
+            "持ち帰り飲食店",
+            "レストラン"
+          ]],
+          ["ショッピング", [
+            "書店",
+            "自転車屋",
+            "カーディーラー",
+            "衣料品店",
+            "コンビニ",
+            "デパート",
+            "家電量販店",
+            "花屋",
+            "家具店",
+            "金物店",
+            "家庭用品店",
+            "宝石店",
+            "酒屋",
+            "ペットショップ",
+            "シューズストア",
+            "ショッピングモール",
+            "スーパーマーケット"
+          ]],
+          ["宗教", [
+            "墓地",
+            "教会",
+            "ヒンドゥー教寺院",
+            "モスク",
+            "シナゴーグ"
+          ]],
+          ["健康", [
+            "ビューティーサロン",
+            "歯科医院",
+            "医院",
+            "薬局",
+            "ジム",
+            "美容室",
+            "病院",
+            "処方箋薬局",
+            "リハビリテーション",
+            "スパ",
+            "動物病院"
+          ]],
+          ["教育", [
+            "図書館",
+            "小学校",
+            "学校",
+            "中学校",
+            "大学"
+          ]],
+          ["サービス", [
+            "会計事務所",
+            "ATM",
+            "銀行",
+            "自動車修理",
+            "洗車",
+            "シティホール",
+            "電気工務店",
+            "葬儀屋",
+            "保険代理店",
+            "ランドリー",
+            "弁護士",
+            "鍵屋",
+            "宿",
+            "レンタルビデオ店",
+            "引っ越し業者",
+            "配管業者",
+            "不動産会社",
+            "屋根工事業者",
+            "倉庫",
+            "旅行代理店"
+          ]],
+          ["公共サービス", [
+            "裁判所",
+            "大使館",
+            "消防署",
+            "行政機関",
+            "警察署",
+            "郵便局"
+          ]]
+    ])
+
     const PLACE_TAG = new Map([
         ["会計", "accounting"],
         ["空港", "airport"],
@@ -102,23 +220,21 @@ const AskAboutInterestComponent = () => {
     ]);
     const navigate = useNavigate();
 
-    let selectedPlaceTag = [];
+    const [selectedPlaceTags, setSelectedPlaceTags] = useState([]);
+    useEffect(() => {
+        const placeTypesJson = localStorage.getItem("selectedPlaceType");
+        if (placeTypesJson !== null) {
+          const placeTypesDict = JSON.parse(placeTypesJson);
+          setSelectedPlaceTags(Object.keys(placeTypesDict));
+        }
+    }, []);
 
-    const placeTypesJson = localStorage.getItem("selectedPlaceType");
-    if (placeTypesJson !== null) {
-        const placeTypesDict = JSON.parse(placeTypesJson);
-        selectedPlaceTag = Object.keys(placeTypesDict);
-    }
-
-    const handleSelectedPlaceTag = (placeTag, checked) => {
+    const handleselectedPlaceTags = (placeTags, checked) => {
         if (checked) {
-            if (!selectedPlaceTag.includes(placeTag)) {
-                selectedPlaceTag.push(placeTag);
-            }
+            let placeTag = placeTags.filter((tag) => (!selectedPlaceTags.includes(tag)))
+            setSelectedPlaceTags([...selectedPlaceTags, ...placeTag]);
         } else {
-            if (selectedPlaceTag.includes(placeTag)) {
-                selectedPlaceTag = selectedPlaceTag.filter((value) => (value != placeTag));
-            }
+            setSelectedPlaceTags(selectedPlaceTags.filter((tag) => (!placeTags.includes(tag))));
         }
     }
 
@@ -128,8 +244,8 @@ const AskAboutInterestComponent = () => {
             localStorage.removeItem("selectedPlaceType");
         }
         let data = {};
-        for (let i = 0; i < selectedPlaceTag.length; i++) {
-            data[selectedPlaceTag[i]] = PLACE_TAG.get(selectedPlaceTag[i])
+        for (let i = 0; i < selectedPlaceTags.length; i++) {
+            data[selectedPlaceTags[i]] = PLACE_TAG.get(selectedPlaceTags[i])
         }
 
         localStorage.setItem('selectedPlaceType', JSON.stringify(data));
@@ -139,9 +255,12 @@ const AskAboutInterestComponent = () => {
     return (
         <>
             <div>
-                {[...PLACE_TAG.keys()].map((value) => {
-                    const selected = selectedPlaceTag.includes(value);
-                    return (<InterestPlaceCheckBoxComponent key={value} placeTag={value} checked={selected} setValue={handleSelectedPlaceTag}/>)
+                {[...PLACE_TYPE_MAP.keys()].map((type) => {
+                    return (<InterestPlaceTypeCheckBoxComponent key={type}
+                        placeType={type}
+                        setTag={handleselectedPlaceTags}
+                        selectedTags={selectedPlaceTags}
+                        tagsInGroup={PLACE_TYPE_MAP.get(type)}/>)
                 })}
 
                 <label><input type='button' onClick={onClickForStoreLocalStorage}></input>決定</label>
