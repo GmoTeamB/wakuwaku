@@ -156,7 +156,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
               marginRight: index < keys.length ? "10px" : "0",
               boxSizing: "border-box",
               padding: "0.2em 1em",
-              boxShadow: "0 4px 4px 0 gray",
+              boxShadow: "2px 2px 4px 0 gray",
             };
             if (selectedButton == key) {
               style.backgroundColor = "#d3e5ff";
