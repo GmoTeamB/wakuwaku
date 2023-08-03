@@ -1,9 +1,8 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Auth from './components/Auth';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Auth from './components/Auth';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
