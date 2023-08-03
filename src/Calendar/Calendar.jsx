@@ -14,37 +14,39 @@ const Calendar = (props) => {
   useEffect(() => {
     (async function() {
       let json = await readCalendar();
-      console.log(json.value[0].availabilityView)
-      console.log("%o",json)
       let title = "test"
       let startDateTime  = ""
       let endDateTime  = ""
       let eventAdd = []
 
-      console.log(json.value[0].scheduleItems)
+      if (json.value && json.value.length > 1 && json.value[0].scheduleItems) {
+        console.log(json.value[0].availabilityView)
+        console.log("%o",json)
+        console.log(json.value[0].scheduleItems)
 
-      for (const scheduleItem of json.value[0].scheduleItems) {
-        title = scheduleItem.subject
-        console.log(scheduleItem.status)
-        if (scheduleItem.status === "busy") {
-            console.log(scheduleItem.start.dateTime)
+        for (const scheduleItem of json.value[0].scheduleItems) {
+          title = scheduleItem.subject
+          console.log(scheduleItem.status)
+          if (scheduleItem.status === "busy") {
+              console.log(scheduleItem.start.dateTime)
+              startDateTime = scheduleItem.start.dateTime;
+              endDateTime = scheduleItem.end.dateTime;
+          }
+          if(scheduleItem.status === "tentative"){
             startDateTime = scheduleItem.start.dateTime;
             endDateTime = scheduleItem.end.dateTime;
-        }
-        if(scheduleItem.status === "tentative"){
-          startDateTime = scheduleItem.start.dateTime;
-          endDateTime = scheduleItem.end.dateTime;
-        }
-        console.log(startDateTime )
-        if (title) {
-          const newEvent = {
-            title,
-            start: startDateTime,
-            end: endDateTime,
-          };
-          eventAdd.push(newEvent)
-        }
-      } 
+          }
+          console.log(startDateTime )
+          if (title) {
+            const newEvent = {
+              title,
+              start: startDateTime,
+              end: endDateTime,
+            };
+            eventAdd.push(newEvent)
+          }
+        } 
+      }
       console.log(eventAdd)
       setEvents([...events, ...eventAdd]);
 
