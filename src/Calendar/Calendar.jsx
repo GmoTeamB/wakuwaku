@@ -5,20 +5,6 @@ import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
 import jaLocale from '@fullcalendar/core/locales/ja';
 import { readCalendar } from '../lib/graph';
 
-
-console.log("start readCalendar")
-
-// console.log("%o",JSON.stringify(json))
-
-const thisMonth = () => {
-  const today = new Date();
-  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}`;
-};
-
-// props = { account: { accessToken, username, ... } }
 const Calendar = (props) => {
   let json = readCalendar()
   const [events, setEvents] = useState([
@@ -33,6 +19,7 @@ const Calendar = (props) => {
       let startDateTime  = ""
       let endDateTime  = ""
       let eventAdd = []
+
       console.log(json.value[0].scheduleItems)
 
       for (const scheduleItem of json.value[0].scheduleItems) {

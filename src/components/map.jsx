@@ -2,19 +2,15 @@ import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 
 const MapBase = () => {
-  const [placeType, setPlaceType] = useState("restaurant");
+  const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
-  //最終的にはユーザーが選択したタイプの辞書をlocalStorageから取得
-  const typesDict = {
-    映画館: "movie_theater",
-    飲食店: "restaurant",
-    カフェ: "cafe",
-    博物館: "museum",
-    美容室: "beauty_salon"
-  }
-  const keys = Object.keys(typesDict);
+  const [selectedPlace, setSelectedPlace] = useState();
+  //ユーザーが選択したプレイスタイプの辞書をlocalStorageから取得
+  const placeTypesJson = localStorage.getItem("selectedPlaceType")
+  const placeTypesDict = JSON.parse(placeTypesJson);
+  const keys = Object.keys(placeTypesDict);
   const handleSelectType = (key) => {
-    setPlaceType(typesDict[key]);
+    setPlaceType(placeTypesDict[key]);
     setSelectedButton(key);
   };
   useEffect(() => {
@@ -45,13 +41,15 @@ const MapBase = () => {
       };
 			//現在地から一定範囲のtypeに合致する施設にマーカーを立てる
       const service = new window.google.maps.places.PlacesService(map);
-      service.nearbySearch(request, (results, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          for (let i = 0; i < results.length; i++) {
-            createMarker(results[i]);
+      if (placeType) {
+        service.nearbySearch(request, (results, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            for (let i = 0; i < results.length; i++) {
+              createMarker(results[i]);
+            }
           }
-        }
-			});
+        });
+      }
 			//クリックしたら施設情報が表示されるマーカーの作成
 			const markersWithInfowindows = [];
       const createMarker = (place) => {
@@ -73,18 +71,21 @@ const MapBase = () => {
               placeId: place.place_id,
             },
             (result, status) => {
+              setSelectedPlace(result)
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 infowindow.setContent(`
-                  <h3>${result.name}</h3>
-                  <a href=${result.url}>${result.formatted_address}</a>
-                  <p>評価：${result.rating ? result.rating + " / 5" : "評価情報なし"}</p>
-                  <p>電話番号：${result.formatted_phone_number ? '<a href=tel:' + result.formatted_phone_number + '>' + result.formatted_phone_number + '</a>' : "電話番号なし"}</p>
-									<ul style=list-style:none>
-										${result.current_opening_hours?.weekday_text?.slice(0, 7).map((item, index) => `
-											<li key=${index}>${item}</li>
-										`).join('') || "情報なし"}
-									</ul>
-                  <p>WEBサイト：${result.website ? '<a href=' + result.website + '>' + result.website + '</a>' : "情報なし"}</p>
+                  <div style="text-align: center;">
+                    <p><b>${result.name}</b></p>
+                    <a href=${result.url}>${result.formatted_address}</a>
+                    <p>評価：${result.rating ? result.rating + " / 5" : "評価情報なし"}</p>
+                    <p>電話番号：${result.formatted_phone_number ? '<a href=tel:' + result.formatted_phone_number + '>' + result.formatted_phone_number + '</a>' : "電話番号なし"}</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                      ${result.current_opening_hours?.weekday_text?.slice(0, 7).map((item, index) => `
+                        <li key=${index}>${item}</li>
+                      `).join('') || "情報なし"}
+                    </ul>
+                    <p>WEBサイト：${result.website ? '<a href=' + result.website + '>' + result.website + '</a>' : "情報なし"}</p>
+                  </div>
                 `);
 								infowindow.open(map, marker);
 								markersWithInfowindows.push({
@@ -104,19 +105,30 @@ const MapBase = () => {
 		//現在位置の取得
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }, [placeType]);
+  const addSchedule = () => {
+          if (!selectedPlace) {
+            alert("予定を追加する場所を選択してください。");
+            return;
+          }
+          if (window.confirm("予定を追加しますか？")) {
+            console.log(selectedPlace.name)
+            //以下でMicrosoftGraphで予定を追加？
+          }
+        };
 
 	return (
     <div id="parent-container" style={{
-      height: "550px",
+      display: "flex",
+      flexDirection: "column",
+      height: "650px",
       width: "90%",
-      position: "absolute",
       margin: "auto",
       top: "0",
       right: "0",
       bottom: "0",
       left: "0"
     }}>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flex: 0 }}>
         {keys.map((key) => (
           <button
             style={{
@@ -128,16 +140,21 @@ const MapBase = () => {
           </button>
         ))}
       </div>
-      <div id="map" style={{ height: "100%", width: "100%", border: "1px solid #000" }} />
+      <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #000" }} />
+      <div style={{textAlign: "right"}}>
+        <button style={{ height: "40px", marginTop: "10px"}} onClick={() => addSchedule()}>予定を追加</button>
+      </div>
 		</div>
 	);
 };
 
 const GoogleMap = () => {
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
-      <MapBase/>
-    </LoadScript>
+    <div>
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
+        <MapBase/>
+      </LoadScript>
+    </div>
   )
 }
 
