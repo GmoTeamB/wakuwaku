@@ -61,15 +61,21 @@ function callMSGraph(endpoint, token, callback) {
 
 function callMSGraphPost(endpoint, token, callback) {
     const headers = new Headers();
+    const now = new Date();
+
+    // 必要な形式に日付を整形
+    const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T`;
+
+    console.log(formattedDate);
     const bearer = `Bearer ${token}`;
     let body = {
         "Schedules": ["zelda09877890@gmail.com"],
         "StartTime": {
-            "dateTime": "2023-07-31T09:00:00",
+            "dateTime": formattedDate + "00:00:00",
             "timeZone": "Tokyo Standard Time"
         },
         "EndTime": {
-            "dateTime": "2023-08-01T22:00:00",
+            "dateTime": formattedDate + "23:59:59",
             "timeZone": "Tokyo Standard Time"
         },
         "availabilityViewInterval": "15"
