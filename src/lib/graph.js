@@ -24,24 +24,47 @@ function getTokenPopup(request) {
             }
     });
 }
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
+  }
+  
+function formatDateTime(dateTime) {
+    const year = dateTime.getFullYear();
+    const month = ('0' + (dateTime.getMonth() + 1)).slice(-2);
+    const day = ('0' + dateTime.getDate()).slice(-2);
+    const hours = ('0' + dateTime.getHours()).slice(-2);
+    const minutes = ('0' + dateTime.getMinutes()).slice(-2);
+    const seconds = ('0' + dateTime.getSeconds()).slice(-2);
 
-function callMSGraphPostSendCalendar(endpoint, token, callback) {
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+function callMSGraphPostSendCalendar(endpoint, token, callback,title,startTime,freetime) {
+    console.log("aaaaaa")
+    console.log(startTime)
     const headers = new Headers();
     const bearer = `Bearer ${token}`;
+
+    const originalDateTime = new Date(startTime);
+    const newDateTime = addMinutes(originalDateTime, freetime);
+
+    const formattedNewDateTime = formatDateTime(newDateTime);
+    console.log(formattedNewDateTime);
+
+    
     let body =
         {
-            "subject": "ミーティングのタイトル",
+            "subject": title,
             "start": {
-              "dateTime": "2023-08-02T10:00:00",
+              "dateTime": startTime,
               "timeZone": "Tokyo Standard Time"
             },
             "end": {
-              "dateTime": "2023-08-02T11:00:00",
+              "dateTime": formattedNewDateTime,
               "timeZone": "Tokyo Standard Time"
             },
-            "location": {
-              "displayName": "会議室A"
-            }
+            // "location": {
+            //   "displayName": "会議室A"
+            // }
           }
     headers.append("Authorization", bearer);
     headers.append("Content-Type", "application/json"); // コンテンツタイプをJSONに設定
@@ -59,11 +82,11 @@ function callMSGraphPostSendCalendar(endpoint, token, callback) {
         .catch(error => console.log(error));
 }
 
-export async function sendCalendar(){
+export async function sendCalendar(title,StartTime,freetime){
     await new Promise((resolve, reject) => {
         getTokenPopup(tokenRequest)
             .then(response => {
-                callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken, resolve);
+                callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken, resolve,title,StartTime,freetime);
             }).catch(error => {
                 console.error(error);
             });
@@ -104,7 +127,7 @@ function callMSGraph(endpoint, token, callback) {
         .catch(error => console.log(error));
 }
 
-function callMSGraphPost(endpoint, token, callback) {
+function callMSGraphPost(endpoint, token, callback,email) {
     const headers = new Headers();
     const now = new Date();
 
@@ -114,7 +137,7 @@ function callMSGraphPost(endpoint, token, callback) {
     console.log(formattedDate);
     const bearer = `Bearer ${token}`;
     let body = {
-        "Schedules": ["zelda09877890@gmail.com"],
+        "Schedules": [email],
         "StartTime": {
             "dateTime": formattedDate + "00:00:00",
             "timeZone": "Tokyo Standard Time"
@@ -141,11 +164,11 @@ function callMSGraphPost(endpoint, token, callback) {
         .catch(error => console.log(error));
 }
 
-export async function readCalendar() {
+export async function readCalendar(email) {
     const promise = new Promise((resolve, reject) => {
         getTokenPopup(tokenRequest)
             .then(response => {
-                callMSGraphPost(graphConfig.graphCalendarEndpoint, response.accessToken, resolve);
+                callMSGraphPost(graphConfig.graphCalendarEndpoint, response.accessToken, resolve,email);
             }).catch(error => {
                 console.error(error);
             });
