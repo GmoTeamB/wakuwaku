@@ -66,4 +66,5 @@ export const graphConfig = {
     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
     graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages",
     graphCalendarEndpoint: "https://graph.microsoft.com/v1.0/me/calendar/getschedule",
+    graphCalendarSendEndpoint: "https://graph.microsoft.com/v1.0/me/events",
 };

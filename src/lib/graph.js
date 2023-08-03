@@ -25,6 +25,51 @@ function getTokenPopup(request) {
     });
 }
 
+function callMSGraphPostSendCalendar(endpoint, token, callback) {
+    const headers = new Headers();
+    const bearer = `Bearer ${token}`;
+    let body =
+        {
+            "subject": "ミーティングのタイトル",
+            "start": {
+              "dateTime": "2023-08-02T10:00:00",
+              "timeZone": "Tokyo Standard Time"
+            },
+            "end": {
+              "dateTime": "2023-08-02T11:00:00",
+              "timeZone": "Tokyo Standard Time"
+            },
+            "location": {
+              "displayName": "会議室A"
+            }
+          }
+    headers.append("Authorization", bearer);
+    headers.append("Content-Type", "application/json"); // コンテンツタイプをJSONに設定
+    headers.append("Prefer", "outlook.timezone=\"Tokyo Standard Time\""); // Prefer ヘッダーを追加
+    console.log("%o",JSON.stringify(body))
+    const options = {
+        method: "Post",
+        headers: headers,
+        body: JSON.stringify(body) // JSON形式のデータ
+    };
+    console.log('request made to Graph API at: ' + new Date().toString());
+    fetch(endpoint, options)
+        .then(response => response.json())
+        .then(response => callback(response, endpoint))
+        .catch(error => console.log(error));
+}
+
+export async function sendCalendar(){
+    await new Promise((resolve, reject) => {
+        getTokenPopup(tokenRequest)
+            .then(response => {
+                callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken, resolve);
+            }).catch(error => {
+                console.error(error);
+            });
+        });
+}
+
 export function getGraphClient(account) {
     const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(myMSALObj, {
         account, // the AccountInfo instance to acquire the token for
