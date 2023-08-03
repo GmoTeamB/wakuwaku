@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
 import jaLocale from '@fullcalendar/core/locales/ja';
 import { readCalendar } from '../lib/graph';
+import { sendCalendar } from '../lib/graph';
 
 function getFiveMinutesSinceMidnightInJapan() {
   const now = new Date();
@@ -35,6 +36,7 @@ console.log('今日の0時から経過した分数（日本時間）:', minutesS
 
 const Calendar = (props) => {
   const { setTimeParams } = props;
+  console.log(props.account.username)
 
   let json = readCalendar()
   const [events, setEvents] = useState([
@@ -43,7 +45,7 @@ const Calendar = (props) => {
   useEffect(() => {
     (async function() {
 
-      let json = await readCalendar();
+      let json = await readCalendar(props.account.username);
       console.log("%o",json)
 
       let title = ""
@@ -67,15 +69,17 @@ const Calendar = (props) => {
         }else if(changestate && free[i] != 0){
           break
         }
-        // if(!changestate){
-        //   continue
-        // }
+      
       }
+    
+      
       console.log(freetime)
       
       const startTime = chageMinutesToHour(starttime);
-      // console.log(freeTime);
+      console.log(startTime)
+      console.log(freetime);
       setTimeParams({ startTime, freetime });
+      // sendCalendar("title",startTime,freetime)
 
       console.log(json.value[0].scheduleItems)
 
