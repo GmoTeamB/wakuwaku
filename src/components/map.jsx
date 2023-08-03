@@ -134,6 +134,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     <div id="parent-container" style={{
       display: "flex",
       flexDirection: "column",
+      position: "relative",
       height: "650px",
       width: "90%",
       margin: "auto",
@@ -144,15 +145,35 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       left: "0"
     }}>
       <div style={{ position: "absolute", zIndex: 1 }}>
-        <ButtonGroup style={{ display: "flex", listStyle: "none" }}>
-          {keys.map((key, index) => (
-            <Button variant={selectedButton === key ? "primary" : "secondary"}
-              style={{marginRight: index < keys.length ? "10px" : "0"}}
-              key={key} onClick={() => handleSelectType(key)}>
-              {key}
-            </Button>
-          ))}
-        </ButtonGroup>
+        <nav style={{
+          display: "flex",
+          listStyle: "none",
+          margin: "1em",
+        }}>
+          {keys.map((key, index) => {
+            let style = {
+              color: "#000000",
+              border: "none",
+              marginRight: index < keys.length ? "10px" : "0",
+              boxSizing: "border-box",
+              padding: "0.2em 1em",
+              boxShadow: "0 4px 4px 0 gray",
+            };
+            if (selectedButton == key) {
+              style.backgroundColor = "#d3e5ff";
+              style.border = "3px solid #428dff";
+            } else {
+              style.backgroundColor = "#ffffff";
+            }
+            return (
+              <Button
+                style={style}
+                key={key} onClick={() => handleSelectType(key)}>
+                {key}
+              </Button>
+            );
+          })}
+        </nav>
       </div>
       <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #808080", borderRadius: "20px" }} />
       <div style={{textAlign: "right"}}>
