@@ -77,7 +77,6 @@ async function signOut() {
 }
 
 async function getTokenPopup(account, request) {
-
     /**
      * See here for more info on account retrieval: 
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md

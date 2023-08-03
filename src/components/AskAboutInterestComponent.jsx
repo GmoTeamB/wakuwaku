@@ -104,15 +104,21 @@ const AskAboutInterestComponent = () => {
 
     let selectedPlaceTag = [];
 
-    function setSelectedPlaceTag(value) {
-        selectedPlaceTag = value;
+    const placeTypesJson = localStorage.getItem("selectedPlaceType");
+    if (placeTypesJson !== null) {
+        const placeTypesDict = JSON.parse(placeTypesJson);
+        selectedPlaceTag = Object.keys(placeTypesDict);
     }
 
-    const handleSelectedPlaceTag = (placeTag) => {
-        if (selectedPlaceTag.find((value) => (value == placeTag)) === undefined){
-            setSelectedPlaceTag([...selectedPlaceTag, placeTag]);
+    const handleSelectedPlaceTag = (placeTag, checked) => {
+        if (checked) {
+            if (!selectedPlaceTag.includes(placeTag)) {
+                selectedPlaceTag.push(placeTag);
+            }
         } else {
-            setSelectedPlaceTag(selectedPlaceTag.filter((value) => (value != placeTag)))
+            if (selectedPlaceTag.includes(placeTag)) {
+                selectedPlaceTag = selectedPlaceTag.filter((value) => (value != placeTag));
+            }
         }
     }
 
@@ -134,9 +140,8 @@ const AskAboutInterestComponent = () => {
         <>
             <div>
                 {[...PLACE_TAG.keys()].map((value) => {
-
-
-                    return (<InterestPlaceCheckBoxComponent key={value} placeTag={value} setValue={handleSelectedPlaceTag}/>)
+                    const selected = selectedPlaceTag.includes(value);
+                    return (<InterestPlaceCheckBoxComponent key={value} placeTag={value} checked={selected} setValue={handleSelectedPlaceTag}/>)
                 })}
 
                 <label><input type='button' onClick={onClickForStoreLocalStorage}></input>決定</label>
