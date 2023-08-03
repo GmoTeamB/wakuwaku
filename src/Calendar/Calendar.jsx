@@ -63,19 +63,21 @@ const Calendar = (props) => {
   };
 
   const css = ` .fc-day-today { background-color: white !important; } .fc{border-radius: 30px;}`
-
-
+const cal = `#cal {border-radius: 30px; overflow: hidden;   outline: 2px solid #dadada !important;outline-offset:0px !important; margin-left: 20px;margin-top: 20px; padding:-1000px;}`
+  const fc = `.fc {margin: -2px;}`
   return (
     <>
     <style>
      {css}
+      {fc}
+     {cal}
       </style>
-
+    <div id="cal">
       <FullCalendar
          plugins={[ timeGridPlugin ]}
          initialView="timeGridDay"
          headerToolbar={false}
-         height="98vh"
+         height="95vh"
          locales={[jaLocale]}
          locale='ja'
          events={events}
@@ -92,14 +94,15 @@ const Calendar = (props) => {
           info.el.style.borderRadius = "10px";
         }}
          />
+      </div>
      </>
   )
 }
 function renderDayHeaderContent(dayHeaderInfo) {
   const css = `font-size: 100em;`
   return (
-    <div style={{fontSize: "2em"}}>
-      {dayHeaderInfo.date.toLocaleDateString()} 
+    <div style={{ fontSize: "2em", marginLeft: "-25px" }}>
+      {dayHeaderInfo.date.toLocaleDateString('ja-JP', { year: '2-digit', month: '2-digit', day: '2-digit' })}
     </div>
   )
 }
