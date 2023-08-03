@@ -123,7 +123,7 @@ function callMSGraphPost(endpoint, token, callback) {
             "dateTime": formattedDate + "23:59:59",
             "timeZone": "Tokyo Standard Time"
         },
-        "availabilityViewInterval": "15"
+        "availabilityViewInterval": "5"
     }
     headers.append("Authorization", bearer);
     headers.append("Content-Type", "application/json"); // コンテンツタイプをJSONに設定
