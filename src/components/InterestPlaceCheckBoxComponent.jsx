@@ -1,19 +1,15 @@
 const InterestPlaceCheckBoxComponent = (props) => {
+    const { placeTag, checked, setValue } = props;
 
     const handleChangeState = (event) => {
-        if (event.target.checked) {
-            let selectedPlaceTag = event.target.value;
-            props.setValue(selectedPlaceTag);
-        } else {
-            let selectedPlaceTag = event.target.value;
-            props.setValue(selectedPlaceTag);
-        }
+        let selectedPlaceTag = event.target.value;
+        setValue(selectedPlaceTag, event.target.checked);
     } 
 
     return (
         <>
-            <label>{props.placeTag}</label>
-            <input type="checkbox" onChange={handleChangeState} value={props.placeTag} ></input>
+            <label>{placeTag}</label>
+            <input type="checkbox" onChange={handleChangeState} value={placeTag} defaultChecked={checked}></input>
         </>
     ); 
 } 
