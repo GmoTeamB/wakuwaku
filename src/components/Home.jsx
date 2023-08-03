@@ -10,7 +10,6 @@ const divStyle = {
 function Home(props) {
     const { account } = props;
     const [timeParams, setTimeParams] = useState(null);
-
     return (
         <div style={divStyle}>
             <Calendar account={account} setTimeParams={setTimeParams} />
