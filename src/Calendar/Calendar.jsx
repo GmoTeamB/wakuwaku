@@ -5,17 +5,9 @@ import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
 import jaLocale from '@fullcalendar/core/locales/ja';
 import { readCalendar } from '../lib/graph';
 import { sendCalendar } from '../lib/graph';
+import { calRendering, searchFreeTime } from './CalFunc';
 
-function getFiveMinutesSinceMidnightInJapan() {
-  const now = new Date();
-  const japanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
-  const midnight = new Date(japanTime.getFullYear(), japanTime.getMonth(), japanTime.getDate());
-  
-  const elapsedMilliseconds = japanTime - midnight;
-  const elapsedMinutes = Math.floor(elapsedMilliseconds / (1000 * 60));
-  
-  return Math.ceil(elapsedMinutes / 5);
-}
+
 function chageMinutesToHour(minutes){
   let hour = Math.floor((minutes * 5)  / 60)
   hour = hour >= 10 ? hour : "0" + hour
@@ -30,12 +22,10 @@ function chageMinutesToHour(minutes){
   return formattedDate + hour + ":" +  m + ":00" 
 
 }
-const minutesSinceMidnightInJapan = getFiveMinutesSinceMidnightInJapan();
-console.log('今日の0時から経過した分数（日本時間）:', minutesSinceMidnightInJapan);
 
 
 const Calendar = (props) => {
-  const { setTimeParams } = props;
+  const { setTimeParams, response } = props;
   console.log(props.account.username)
 
   let json = readCalendar()
@@ -46,70 +36,26 @@ const Calendar = (props) => {
     (async function() {
 
       let json = await readCalendar(props.account.username);
+      if (!(json?.value && json.value[0])) {
+        return;
+      }
       console.log("%o",json)
 
-      let title = ""
-      let startDateTime  = ""
-      let endDateTime  = ""
-      let eventAdd = []
-      let free = json.value[0].availabilityView.split('');
-      console.log(free)
-      const minutesFiveSinceMidnightInJapan = getFiveMinutesSinceMidnightInJapan();
-      let changestate = false
-      let freetime = 0
-      let starttime = -1
-      for(let i = minutesFiveSinceMidnightInJapan; i < free.length;i++){
-        if(free[i] == 0){
-          freetime += 5
-          if(starttime == -1){
-            starttime = i
-          }
-          changestate = true
-          console.log(freetime)
-        }else if(changestate && free[i] != 0){
-          break
-        }
       
-      }
-    
-      
-      console.log(freetime)
-      
-      const startTime = chageMinutesToHour(starttime);
+      let[startTime,freetime]  = searchFreeTime(json.value[0].availabilityView.split(''))
+          
       console.log(startTime)
       console.log(freetime);
       setTimeParams({ startTime, freetime });
       // sendCalendar("title",startTime,freetime)
 
       console.log(json.value[0].scheduleItems)
-
-      for (const scheduleItem of json.value[0].scheduleItems) {
-        title = scheduleItem.subject
-        console.log(scheduleItem.status)
-        if (scheduleItem.status === "busy") {
-            console.log(scheduleItem.start.dateTime)
-            startDateTime = scheduleItem.start.dateTime;
-            endDateTime = scheduleItem.end.dateTime;
-        }
-        if(scheduleItem.status === "tentative"){
-          startDateTime = scheduleItem.start.dateTime;
-          endDateTime = scheduleItem.end.dateTime;
-        }
-        console.log(startDateTime )
-       
-        const newEvent = {
-          title,
-          start: startDateTime,
-          end: endDateTime,
-        };
-        eventAdd.push(newEvent)
+      let eventAdd = calRendering(json.value[0].scheduleItems)
       
-      } 
-      console.log(eventAdd)
-      setEvents([...events, ...eventAdd]);
+      setEvents(eventAdd);
 
     })();
-  }, []);
+  }, [response]);
 
   const handleAddEvent = () => {
     

@@ -1,8 +1,7 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 import { sendCalendar } from "../lib/graph";
-
-const MapBase = ({ timeParams }) => {
+const MapBase = ({ timeParams, onAddSchedule }) => {
   const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState();
@@ -106,14 +105,15 @@ const MapBase = ({ timeParams }) => {
 		//現在位置の取得
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }, [placeType]);
-  const addSchedule = () => {
+  const addSchedule = async () => {
           if (!selectedPlace) {
             alert("予定を追加する場所を選択してください。");
             return;
           }
           if (window.confirm("予定を追加しますか？")) {
             if (timeParams) {
-              sendCalendar(selectedPlace.name, timeParams.startTime, timeParams.freetime);
+              const response = await sendCalendar(selectedPlace.name, timeParams.startTime, timeParams.freetime);
+              onAddSchedule(response);
             } else {
               alert("予定を入れる時間がありません")
 
@@ -153,11 +153,11 @@ const MapBase = ({ timeParams }) => {
 	);
 };
 
-const GoogleMap = ({timeParams}) => {
+const GoogleMap = ({timeParams, onAddSchedule}) => {
   return (
     <div>
       <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
-        <MapBase timeParams={timeParams}/>
+        <MapBase timeParams={timeParams} onAddSchedule={onAddSchedule}/>
       </LoadScript>
     </div>
   )
