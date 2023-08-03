@@ -1,7 +1,8 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import { sendCalendar } from "../lib/graph";
 
-const MapBase = () => {
+const MapBase = ({ timeParams }) => {
   const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState();
@@ -111,8 +112,12 @@ const MapBase = () => {
             return;
           }
           if (window.confirm("予定を追加しますか？")) {
-            console.log(selectedPlace.name)
-            //以下でMicrosoftGraphで予定を追加？
+            if (timeParams) {
+              sendCalendar(selectedPlace.name, timeParams.startTime, timeParams.freetime);
+            } else {
+              alert("予定を入れる時間がありません")
+
+            }
           }
         };
 
@@ -148,11 +153,11 @@ const MapBase = () => {
 	);
 };
 
-const GoogleMap = () => {
+const GoogleMap = ({timeParams}) => {
   return (
     <div>
       <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY} libraries={["places"]}>
-        <MapBase/>
+        <MapBase timeParams={timeParams}/>
       </LoadScript>
     </div>
   )
