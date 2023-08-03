@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid'; // 追加
 import jaLocale from '@fullcalendar/core/locales/ja';
 import { readCalendar } from '../lib/graph';
+
 function getFiveMinutesSinceMidnightInJapan() {
   const now = new Date();
   const japanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
@@ -33,6 +34,8 @@ console.log('今日の0時から経過した分数（日本時間）:', minutesS
 
 
 const Calendar = (props) => {
+  const { setTimeParams } = props;
+
   let json = readCalendar()
   const [events, setEvents] = useState([
     // 初期のイベントデータ（必要に応じてカスタマイズしてください）
@@ -69,8 +72,10 @@ const Calendar = (props) => {
         // }
       }
       console.log(freetime)
-    
-      console.log(chageMinutesToHour(starttime))
+      
+      const startTime = chageMinutesToHour(starttime);
+      // console.log(freeTime);
+      setTimeParams({ startTime, freetime });
 
       console.log(json.value[0].scheduleItems)
 
