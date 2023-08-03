@@ -24,6 +24,7 @@ function Auth() {
     } else {
         if (window.location.pathname !== "/signin") {
             window.history.pushState("", "", "/signin");
+            return (<SignIn onSuccess={setAccount} redirect="/select"/>);
         } else {
             return (<SignIn onSuccess={setAccount} redirect="/select"/>);
         }

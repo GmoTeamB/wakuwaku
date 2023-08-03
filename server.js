@@ -14,11 +14,11 @@ let port = DEFAULT_PORT;
 app.use(morgan('dev'));
 
 // Setup app folders.
-app.use(express.static('app'));
+app.use(express.static('build'));
 
 // Set up a route for index.html
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/build/index.html'));
 });
 
 // Start the server.
