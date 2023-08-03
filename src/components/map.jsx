@@ -1,5 +1,7 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { sendCalendar } from "../lib/graph";
 const MapBase = ({ timeParams, onAddSchedule }) => {
   const [placeType, setPlaceType] = useState();
@@ -121,35 +123,36 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
           }
         };
 
-	return (
-    <div id="parent-container" style={{
+  return (
+      <div id="parent-container" style={{
       display: "flex",
-      flexDirection: "column",
-      height: "650px",
-      width: "90%",
-      margin: "auto",
-      top: "0",
-      right: "0",
-      bottom: "0",
-      left: "0"
-    }}>
-      <div style={{ display: "flex", flex: 0 }}>
-        {keys.map((key) => (
-          <button
-            style={{
-            height: "40px",
-            backgroundColor: selectedButton === key ? "#87ceeb" : "transparent",
-            }}
-            key={key} onClick={() => handleSelectType(key)}>
-            {key}
-          </button>
-        ))}
+        justifyContent: "center",
+        flexDirection: "column",
+        height: "650px",
+        width: "90%",
+        margin: "auto",
+        marginTop: "40px",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        left: "0",
+      }}>
+        <div style={{ display: "flex", flex: 0 }}>
+          {keys.map((key, index) => (
+            <ButtonGroup aria-label="Basic example">
+              <Button variant={selectedButton === key ? "primary" : "secondary"}
+                style={{ marginRight: index < keys.length ? "10px" : "0" }}
+                key={key} onClick={() => handleSelectType(key)}>
+                {key}
+              </Button>
+            </ButtonGroup>
+          ))}
+        </div>
+        <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #808080", borderRadius: "10px",}} />
+        <div style={{textAlign: "right"}}>
+          <button style={{ height: "40px", marginTop: "10px"}} onClick={() => addSchedule()}>予定を追加</button>
+        </div>
       </div>
-      <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #000" }} />
-      <div style={{textAlign: "right"}}>
-        <button style={{ height: "40px", marginTop: "10px"}} onClick={() => addSchedule()}>予定を追加</button>
-      </div>
-		</div>
 	);
 };
 
