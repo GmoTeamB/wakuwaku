@@ -1,7 +1,24 @@
+import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import InterestPlaceTypeCheckBoxComponent from './InterestPlaceTypeCheckBoxComponent.jsx';
-import { useEffect } from 'react';
+
+const TitleStyle = {
+  position: "sticky",
+  top: 0,
+  width: "100%",
+  height: "5em",
+  backgroundColor: "#428dff",
+  color: "white",
+  marginBottom: "1em",
+};
+const H1Style = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+  height: "100%",
+};
 
 const AskAboutInterestComponent = () => {
     const PLACE_TYPE_MAP = new Map([
@@ -253,19 +270,22 @@ const AskAboutInterestComponent = () => {
     }
 
     return (
-        <>
-            <div>
-                {[...PLACE_TYPE_MAP.keys()].map((type) => {
-                    return (<InterestPlaceTypeCheckBoxComponent key={type}
-                        placeType={type}
-                        setTag={handleselectedPlaceTags}
-                        selectedTags={selectedPlaceTags}
-                        tagsInGroup={PLACE_TYPE_MAP.get(type)}/>)
-                })}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "3em" }}>
+        <div style={TitleStyle}>
+          <h1 style={H1Style}>興味のある分野を選択してください</h1>
+        </div>
+        <div style={{ width: "min-content", textAlign: "center" }}>
+          {[...PLACE_TYPE_MAP.keys()].map((type) => {
+              return (<InterestPlaceTypeCheckBoxComponent key={type}
+                  placeType={type}
+                  setTag={handleselectedPlaceTags}
+                  selectedTags={selectedPlaceTags}
+                  tagsInGroup={PLACE_TYPE_MAP.get(type)}/>)
+          })}
 
-                <label><input type='button' onClick={onClickForStoreLocalStorage}></input>決定</label>
-            </div>
-        </>
+          <Button onClick={onClickForStoreLocalStorage} style={{ textAlign: "center", width: "10em" }}>決定</Button>
+        </div>
+      </div>
     );
 }
 
