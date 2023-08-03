@@ -10,10 +10,15 @@ const divStyle = {
 function Home(props) {
     const { account } = props;
     const [timeParams, setTimeParams] = useState(null);
+    const [response, setResponse] = useState(null);
+
+    function onAddSchedule(response) {
+        setResponse(response);
+    }
     return (
         <div style={divStyle}>
-            <Calendar account={account} setTimeParams={setTimeParams} />
-            <GoogleMap timeParams={timeParams}/>
+            <Calendar account={account} response={response} setTimeParams={setTimeParams} />
+            <GoogleMap timeParams={timeParams} onAddSchedule={onAddSchedule}/>
         </div>
     )
 }
