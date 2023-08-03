@@ -1,3 +1,4 @@
+import Button from 'react-bootstrap/Button';
 import { signIn } from "../lib/login";
 
 const divStyle = {
@@ -11,10 +12,16 @@ const divStyle = {
     boxSizing: "border-box"
 };
 const pStyle = {
-    fontSize: "2em"
+    fontSize: "4em",
+    margin: "1em 0",
 };
 const btnStyle = {
     height: "min-content"
+};
+const AsideStyle = {
+    color: "gray",
+    fontSize: "0.8em",
+    margin: "1em 0",
 };
 
 function SignIn(props) {
@@ -46,7 +53,8 @@ function SignIn(props) {
     return (
         <div style={divStyle}>
             <p style={pStyle}>わくわく休み時間</p>
-            <button id="sign_in" onClick={btnClick} style={btnStyle}>Sign In</button>
+            <Button id="sign_in" onClick={btnClick} style={btnStyle} variant="primary">サインイン</Button>
+            <aside style={AsideStyle}>Microsoftアカウントでサインインします。</aside>
         </div>
     );
 }
