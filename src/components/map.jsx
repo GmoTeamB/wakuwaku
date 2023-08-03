@@ -15,6 +15,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     setPlaceType(placeTypesDict[key]);
     setSelectedButton(key);
   };
+
   useEffect(() => {
     const successCallback = (position) => {
       const lat = position.coords.latitude;
@@ -23,6 +24,12 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
         center: currentLocation,
         zoom: 17,
+        mapTypeControl: false,
+        panControl: false,
+        scaleControl: false,
+        zoomControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
       });
 			//現在地のマーカーを作成
 			const currentLocationMarkerIcon = {
@@ -127,25 +134,45 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     <div id="parent-container" style={{
       display: "flex",
       flexDirection: "column",
-      height: "650px",
+      position: "relative",
+      height: "100%",
       width: "90%",
       margin: "auto",
-      marginTop: "40px",
       top: "0",
       right: "0",
       bottom: "0",
       left: "0"
     }}>
-      <div style={{ display: "flex", flex: 0 }}>
-        {keys.map((key, index) => (
-          <ButtonGroup>
-            <Button variant={selectedButton === key ? "primary" : "secondary"}
-              style={{marginRight: index < keys.length ? "10px" : "0"}}
-              key={key} onClick={() => handleSelectType(key)}>
-              {key}
-            </Button>
-            </ButtonGroup>
-        ))}
+      <div style={{ position: "absolute", zIndex: 1 }}>
+        <nav style={{
+          display: "flex",
+          listStyle: "none",
+          margin: "1em",
+        }}>
+          {keys.map((key, index) => {
+            let style = {
+              color: "#000000",
+              border: "none",
+              marginRight: index < keys.length ? "10px" : "0",
+              boxSizing: "border-box",
+              padding: "0.2em 1em",
+              boxShadow: "2px 2px 4px 0 gray",
+            };
+            if (selectedButton == key) {
+              style.backgroundColor = "#d3e5ff";
+              style.border = "3px solid #428dff";
+            } else {
+              style.backgroundColor = "#ffffff";
+            }
+            return (
+              <Button
+                style={style}
+                key={key} onClick={() => handleSelectType(key)}>
+                {key}
+              </Button>
+            );
+          })}
+        </nav>
       </div>
       <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #808080", borderRadius: "20px" }} />
       <div style={{textAlign: "right"}}>
