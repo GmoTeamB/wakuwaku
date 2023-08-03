@@ -10,6 +10,7 @@ const Calendar = (props) => {
   const [events, setEvents] = useState([
     // 初期のイベントデータ（必要に応じてカスタマイズしてください）
   ]);
+
   useEffect(() => {
     (async function() {
       let json = await readCalendar();
@@ -56,8 +57,6 @@ const Calendar = (props) => {
 
   return (
     <>
-      <button onClick={handleAddEvent}>イベントを追加</button>
-
       <FullCalendar
           plugins={[ dayGridPlugin ,timeGridPlugin]}
           initialView="timeGridDay"
