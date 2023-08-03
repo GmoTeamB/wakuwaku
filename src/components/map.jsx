@@ -102,7 +102,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     };
 
     const errorCallback = (error) => {
-      alert("位置情報が取得できませんでした。\n位置情報の取得が許可されているか確認してください。");
+      alert("位置情報が取得できませんでした。\n位置情報の取得が許可しているか確認してください。");
     };
 		//現在位置の取得
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
