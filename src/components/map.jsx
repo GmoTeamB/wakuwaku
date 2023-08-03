@@ -1,6 +1,8 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import { Button, ButtonGroup } from "react-bootstrap";
 import { sendCalendar } from "../lib/graph";
+
 const MapBase = ({ timeParams, onAddSchedule }) => {
   const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -128,24 +130,24 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       height: "650px",
       width: "90%",
       margin: "auto",
+      marginTop: "40px",
       top: "0",
       right: "0",
       bottom: "0",
       left: "0"
     }}>
       <div style={{ display: "flex", flex: 0 }}>
-        {keys.map((key) => (
-          <button
-            style={{
-            height: "40px",
-            backgroundColor: selectedButton === key ? "#87ceeb" : "transparent",
-            }}
-            key={key} onClick={() => handleSelectType(key)}>
-            {key}
-          </button>
+        {keys.map((key, index) => (
+          <ButtonGroup>
+            <Button variant={selectedButton === key ? "primary" : "secondary"}
+              style={{marginRight: index < keys.length ? "10px" : "0"}}
+              key={key} onClick={() => handleSelectType(key)}>
+              {key}
+            </Button>
+            </ButtonGroup>
         ))}
       </div>
-      <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #000" }} />
+      <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #808080", borderRadius: "20px" }} />
       <div style={{textAlign: "right"}}>
         <button style={{ height: "40px", marginTop: "10px"}} onClick={() => addSchedule()}>予定を追加</button>
       </div>
