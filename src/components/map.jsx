@@ -1,7 +1,7 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import ReactDOM from 'react-dom/client';
-import { Button, ButtonGroup } from "react-bootstrap";
 import { sendCalendar } from "../lib/graph";
 import PlaceInfo from "./PlaceInfo";
 
@@ -125,9 +125,10 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       display: "flex",
       flexDirection: "column",
       position: "relative",
-      height: "100%",
-      width: "90%",
+      height: "680px",
+      width: "95%",
       margin: "auto",
+      marginTop: "20px",
       top: "0",
       right: "0",
       bottom: "0",
