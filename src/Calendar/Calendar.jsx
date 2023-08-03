@@ -6,6 +6,8 @@ import jaLocale from '@fullcalendar/core/locales/ja';
 import { readCalendar } from '../lib/graph';
 import { sendCalendar } from '../lib/graph';
 import { calRendering, searchFreeTime } from './CalFunc';
+import styled from "@emotion/styled";
+
 
 
 function chageMinutesToHour(minutes){
@@ -23,6 +25,17 @@ function chageMinutesToHour(minutes){
 
 }
 
+// export const StyleWrapper = styled.div`
+// .fc-toolbar{
+//   margin-bottom: 9.5m
+// }
+// .fc .fc-button{
+
+// }
+// :root{
+
+// }
+// `
 
 const Calendar = (props) => {
   const { setTimeParams, response } = props;
@@ -61,17 +74,45 @@ const Calendar = (props) => {
     
   };
 
+  const css = ` .fc-day-today { background-color: white !important; } .fc{border-radius: 30px;}`
+
+
   return (
     <>
+    <style>
+     {css}
+      </style>
+
       <FullCalendar
-          plugins={[ dayGridPlugin ,timeGridPlugin]}
-          initialView="timeGridDay"
-          locales={[jaLocale]}
-          locale='ja'
-          events={events}
-      />
+         plugins={[ timeGridPlugin ]}
+         initialView="timeGridDay"
+         headerToolbar={false}
+         height="98vh"
+         locales={[jaLocale]}
+         locale='ja'
+         events={events}
+         dayHeaderContent={renderDayHeaderContent} // ヘッダーの内容をカスタマイズする関数を指定する
+         allDaySlot={false} 
+         themeSystem="bootstrap"  // テーマを標準に設定する
+         todayHighlight={false} // 今日の背景色を変えない
+         nowIndicator={true}
+         slotDuration="00:30:00" // 時間の間隔を1時間に設定する
+         dayHeaderDidMount={function(info) { // 日付のヘッダーの要素にアクセスする関数
+          info.el.style.boxShadow = "5px 5px 5px gray"; // box-shadowプロパティの値を変更する
+        }}
+        eventDidMount={function(info) {
+          info.el.style.borderRadius = "10px";
+        }}
+         />
      </>
   )
 }
-
+function renderDayHeaderContent(dayHeaderInfo) {
+  const css = `font-size: 100em;`
+  return (
+    <div style={{fontSize: "2em"}}>
+      {dayHeaderInfo.date.toLocaleDateString()} 
+    </div>
+  )
+}
 export default Calendar
