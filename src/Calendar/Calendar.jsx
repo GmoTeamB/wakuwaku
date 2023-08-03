@@ -6,7 +6,6 @@ import jaLocale from '@fullcalendar/core/locales/ja';
 import { readCalendar } from '../lib/graph';
 import { sendCalendar } from '../lib/graph';
 import { calRendering, searchFreeTime } from './CalFunc';
-import styled from "@emotion/styled";
 
 
 
@@ -25,17 +24,6 @@ function chageMinutesToHour(minutes){
 
 }
 
-// export const StyleWrapper = styled.div`
-// .fc-toolbar{
-//   margin-bottom: 9.5m
-// }
-// .fc .fc-button{
-
-// }
-// :root{
-
-// }
-// `
 
 const Calendar = (props) => {
   const { setTimeParams, response } = props;
