@@ -13,6 +13,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     setPlaceType(placeTypesDict[key]);
     setSelectedButton(key);
   };
+
   useEffect(() => {
     const successCallback = (position) => {
       const lat = position.coords.latitude;
@@ -21,6 +22,12 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
         center: currentLocation,
         zoom: 17,
+        mapTypeControl: false,
+        panControl: false,
+        scaleControl: false,
+        zoomControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
       });
 			//現在地のマーカーを作成
 			const currentLocationMarkerIcon = {
@@ -133,17 +140,21 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       bottom: "0",
       left: "0"
     }}>
-      <div style={{ display: "flex", flex: 0 }}>
-        {keys.map((key) => (
-          <button
-            style={{
-            height: "40px",
-            backgroundColor: selectedButton === key ? "#87ceeb" : "transparent",
-            }}
-            key={key} onClick={() => handleSelectType(key)}>
-            {key}
-          </button>
-        ))}
+      <div style={{ position: "absolute", zIndex: 1 }}>
+        <ul style={{ display: "flex", listStyle: "none" }}>
+          {keys.map((key) => (
+            <li key={key} style={{ backgroundColor: "white" }}>
+              <button
+                style={{
+                height: "40px",
+                backgroundColor: selectedButton === key ? "#87ceeb" : "transparent",
+                }}
+                onClick={() => handleSelectType(key)}>
+                {key}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
       <div id="map" style={{ flex: 1, width: "100%", border: "1px solid #000" }} />
       <div style={{textAlign: "right"}}>
