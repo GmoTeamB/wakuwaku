@@ -1,3 +1,5 @@
+import { Form } from "react-bootstrap";
+
 const InterestPlaceCheckBoxComponent = (props) => {
     const { placeTag, checked, setValue } = props;
 
@@ -6,11 +8,17 @@ const InterestPlaceCheckBoxComponent = (props) => {
         setValue([selectedPlaceTag], event.target.checked);
     } 
 
+    const id = `interest-place-type-checkbox-component-checkbox-${placeTag}`;
+
     return (
-        <>
-            <input type="checkbox" onChange={handleChangeState} value={placeTag} checked={checked}></input>
-            <label>{placeTag}</label>
-        </>
+        <Form.Check
+            id={id}
+            label={placeTag}
+            onChange={handleChangeState}
+            value={placeTag}
+            checked={checked}
+            style={{ display: "inline-block" }}
+        ></Form.Check>
     ); 
 } 
 

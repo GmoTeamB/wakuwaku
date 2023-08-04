@@ -1,11 +1,109 @@
 import { LoadScript } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import ReactDOM from 'react-dom/client';
-import { Button, ButtonGroup } from "react-bootstrap";
 import { sendCalendar } from "../lib/graph";
 import PlaceInfo from "./PlaceInfo";
 
 const MapBase = ({ timeParams, onAddSchedule }) => {
+  const facilityTimesDict = {
+    "accounting": 60,
+    "airport": 120,
+    "amusement_park": 180,
+    "aquarium": 120,
+    "art_gallery": 90,
+    "atm": 10,
+    "bakery": 20,
+    "bank": 30,
+    "bar": 120,
+    "beauty_salon": 60,
+    "bicycle_store": 30,
+    "book_store": 60,
+    "bowling_alley": 120,
+    "bus_station": 30,
+    "cafe": 60,
+    "campground": 180,
+    "car_dealer": 60,
+    "car_rental": 60,
+    "car_repair": 60,
+    "car_wash": 30,
+    "casino": 180,
+    "cemetery": 30,
+    "church": 60,
+    "city_hall": 60,
+    "clothing_store": 60,
+    "convenience_store": 20,
+    "courthouse": 60,
+    "dentist": 45,
+    "department_store": 90,
+    "doctor": 45,
+    "drugstore": 30,
+    "electrician": 60,
+    "electronics_store": 60,
+    "embassy": 60,
+    "fire_station": 20,
+    "florist": 30,
+    "funeral_home": 30,
+    "furniture_store": 60,
+    "gas_station": 20,
+    "gym": 90,
+    "hair_care": 45,
+    "hardware_store": 60,
+    "hindu_temple": 60,
+    "home_goods_store": 60,
+    "hospital": 90,
+    "insurance_agency": 30,
+    "jewelry_store": 30,
+    "laundry": 60,
+    "lawyer": 60,
+    "library": 120,
+    "light_rail_station": 30,
+    "liquor_store": 30,
+    "local_government_office": 60,
+    "locksmith": 30,
+    "lodging": 180,
+    "meal_delivery": 45,
+    "meal_takeaway": 45,
+    "mosque": 60,
+    "movie_rental": 60,
+    "movie_theater": 180,
+    "moving_company": 60,
+    "museum": 120,
+    "night_club": 180,
+    "painter": 60,
+    "park": 120,
+    "parking": 30,
+    "pet_store": 45,
+    "pharmacy": 30,
+    "physiotherapist": 45,
+    "plumber": 60,
+    "police": 30,
+    "post_office": 30,
+    "primary_school": 180,
+    "real_estate_agency": 120,
+    "restaurant": 90,
+    "roofing_contractor": 60,
+    "rv_park": 180,
+    "school": 180,
+    "secondary_school": 180,
+    "shoe_store": 60,
+    "shopping_mall": 180,
+    "spa": 90,
+    "stadium": 180,
+    "storage": 60,
+    "store": 30,
+    "subway_station": 30,
+    "supermarket": 60,
+    "synagogue": 60,
+    "taxi_stand": 20,
+    "tourist_attraction": 120,
+    "train_station": 30,
+    "transit_station": 30,
+    "travel_agency": 60,
+    "university": 180,
+    "veterinary_care": 45,
+    "zoo": 180
+  };
   const [placeType, setPlaceType] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
   //ユーザーが選択したプレイスタイプの辞書をlocalStorageから取得
@@ -24,7 +122,8 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     }
     if (window.confirm("予定を追加しますか？")) {
       if (timeParams) {
-        const response = await sendCalendar(place.name, timeParams.startTime, timeParams.freetime);
+        const response = await sendCalendar(place.name, timeParams.startTime, timeParams.freetime, facilityTimesDict[placeType]);
+        console.log(facilityTimesDict[placeType])
         onAddSchedule(response);
       } else {
         alert("予定を入れる時間がありません")
@@ -125,9 +224,10 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       display: "flex",
       flexDirection: "column",
       position: "relative",
-      height: "100%",
-      width: "90%",
+      height: "680px",
+      width: "95%",
       margin: "auto",
+      marginTop: "20px",
       top: "0",
       right: "0",
       bottom: "0",
@@ -138,6 +238,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
           display: "flex",
           listStyle: "none",
           margin: "1em",
+          overflowX: "scroll"
         }}>
           {keys.map((key, index) => {
             let style = {
