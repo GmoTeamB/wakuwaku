@@ -1,7 +1,8 @@
 import { InteractionType, InteractionRequiredAuthError } from "@azure/msal-browser";
 import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 import { Client } from "@microsoft/microsoft-graph-client";
-import { myMSALObj, username } from "./login";
+import { username } from "./login";
+import { myMSALObj } from "../components/SignIn";
 import { tokenRequest, graphConfig } from "../config";
 
 function getTokenPopup(request) {

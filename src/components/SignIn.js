@@ -1,5 +1,9 @@
 import Button from 'react-bootstrap/Button';
+import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 import { signIn } from "../lib/login";
+import { msalConfig, loginRequest, scopes, tokenRequest } from "../config";
+
+export const myMSALObj = new PublicClientApplication(msalConfig);
 
 const divStyle = {
     display: "flex",
@@ -25,8 +29,9 @@ const AsideStyle = {
 };
 
 function SignIn(props) {
+
     async function btnClick() {
-        const account = await signIn();
+        const account = await signIn(myMSALObj);
 
         if (!account) {
             if (props && props.onFail) {
