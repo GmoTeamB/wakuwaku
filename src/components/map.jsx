@@ -240,6 +240,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
           margin: "1em",
           whiteSpace: "nowrap",
           overflowX: "auto",
+          paddingBottom: "5px",
         }}>
           {keys.map((key, index) => {
             let style = {
