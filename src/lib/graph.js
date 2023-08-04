@@ -38,11 +38,14 @@ function formatDateTime(dateTime) {
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
-async function callMSGraphPostSendCalendar(endpoint, token,title,startTime,freetime) {
+async function callMSGraphPostSendCalendar(endpoint, token,title,startTime,freetime,useagetime) {
     console.log("aaaaaa")
     console.log(startTime)
     const headers = new Headers();
     const bearer = `Bearer ${token}`;
+    if(freetime > useagetime){
+        freetime = useagetime
+    }
 
     const originalDateTime = new Date(startTime);
     const newDateTime = addMinutes(originalDateTime, freetime);
@@ -81,9 +84,9 @@ async function callMSGraphPostSendCalendar(endpoint, token,title,startTime,freet
         .catch(error => console.log(error));
 }
 
-export async function sendCalendar(title,StartTime,freetime){
+export async function sendCalendar(title,StartTime,freetime,useagetime){
     const response = await getTokenPopup(tokenRequest);
-    const result = await callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken,title,StartTime,freetime);
+    const result = await callMSGraphPostSendCalendar(graphConfig.graphCalendarSendEndpoint, response.accessToken,title,StartTime,freetime,useagetime);
     return result;
 }
 
