@@ -6,6 +6,7 @@ import { refreshToken } from "../lib/login";
 const REFRESH_INTERVAL_MS = 10 * 60 * 1000; // 10min
 
 function Auth() {
+    const myMSALObj = new PublicClientApplication(msalConfig);
     const [account, setAccount] = useState(null);
     const loggedIn = useMemo(() => !!(account && account.accessToken), [account]);
 
