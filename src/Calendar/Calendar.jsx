@@ -20,7 +20,7 @@ function chageMinutesToHour(minutes){
   const now = new Date();
 
   const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T`;
-  return formattedDate + hour + ":" +  m + ":00" 
+  return formattedDate + hour + ":" +  m + ":00"
 
 }
 
@@ -42,9 +42,9 @@ const Calendar = (props) => {
       }
       console.log("%o",json)
 
-      
+
       let[startTime,freetime]  = searchFreeTime(json.value[0].availabilityView.split(''))
-          
+
       console.log(startTime)
       console.log(freetime);
       setTimeParams({ startTime, freetime });
@@ -52,18 +52,19 @@ const Calendar = (props) => {
 
       console.log(json.value[0].scheduleItems)
       let eventAdd = calRendering(json.value[0].scheduleItems)
-      
+
       setEvents(eventAdd);
 
     })();
   }, [response]);
 
   const handleAddEvent = () => {
-    
+
   };
 
   const css = ` .fc-day-today { background-color: white !important; } .fc{border-radius: 20px;}`
 const cal = `#cal {border-radius: 20px; overflow: hidden;   outline: 2px solid #aeafaf !important;outline-offset:0px !important; margin-left: 20px;margin-top: 20px; padding:-1000px;}`
+
   const fc = `.fc {margin: -2px;}`
   return (
     <>
@@ -82,7 +83,7 @@ const cal = `#cal {border-radius: 20px; overflow: hidden;   outline: 2px solid #
          locale='ja'
          events={events}
          dayHeaderContent={renderDayHeaderContent} // ヘッダーの内容をカスタマイズする関数を指定する
-         allDaySlot={false} 
+         allDaySlot={false}
          themeSystem="bootstrap"  // テーマを標準に設定する
          todayHighlight={false} // 今日の背景色を変えない
          nowIndicator={true}
