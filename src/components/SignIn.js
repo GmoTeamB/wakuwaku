@@ -3,8 +3,6 @@ import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/ms
 import { signIn } from "../lib/login";
 import { msalConfig, loginRequest, scopes, tokenRequest } from "../config";
 
-export const myMSALObj = new PublicClientApplication(msalConfig);
-
 const divStyle = {
     display: "flex",
     flexDirection: "column",
@@ -30,6 +28,7 @@ const AsideStyle = {
 
 function SignIn(props) {
 
+    const myMSALObj = new PublicClientApplication(msalConfig);
     async function btnClick() {
         const account = await signIn(myMSALObj);
 
