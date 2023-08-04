@@ -238,6 +238,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
           display: "flex",
           listStyle: "none",
           margin: "1em",
+          overflowX: "scroll"
         }}>
           {keys.map((key, index) => {
             let style = {
