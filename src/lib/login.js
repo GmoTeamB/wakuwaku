@@ -2,7 +2,7 @@ import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/ms
 import { msalConfig, loginRequest, scopes, tokenRequest } from "../config";
 //import { myMSALObj } from "../components/SignIn";
 
-const myMSALObj = new PublicClientApplication(msalConfig);
+export const myMSALObj = new PublicClientApplication(msalConfig);
 
 export let username = "";
 
