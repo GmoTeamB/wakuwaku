@@ -29,6 +29,7 @@ const AsideStyle = {
 function SignIn(props) {
 
     const myMSALObj = new PublicClientApplication(msalConfig);
+    myMSALObj.initialize();
     async function btnClick() {
         const account = await signIn(myMSALObj);
 
