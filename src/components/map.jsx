@@ -217,7 +217,7 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
     };
 		//現在位置の取得
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-  }, [placeType]);
+  }, [placeType,timeParams]);
 
 	return (
     <div id="parent-container" style={{
