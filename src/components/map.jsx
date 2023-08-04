@@ -233,12 +233,13 @@ const MapBase = ({ timeParams, onAddSchedule }) => {
       bottom: "0",
       left: "0"
     }}>
-      <div style={{ position: "absolute", zIndex: 1 }}>
+      <div style={{ position: "absolute", zIndex: 1, width: "100%" }}>
         <nav style={{
           display: "flex",
           listStyle: "none",
           margin: "1em",
-          overflowX: "scroll"
+          whiteSpace: "nowrap",
+          overflowX: "auto",
         }}>
           {keys.map((key, index) => {
             let style = {
