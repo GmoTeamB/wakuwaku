@@ -63,14 +63,16 @@ const Calendar = (props) => {
   };
 
   const css = ` .fc-day-today { background-color: white !important; } .fc{border-radius: 20px;}`
-const cal = `#cal {border-radius: 20px; overflow: hidden;   outline: 2px solid #aeafaf !important;outline-offset:0px !important; margin-left: 20px;margin-top: 20px; padding:-1000px;}`
+  const cal = `#cal {border-radius: 20px; overflow: hidden;   outline: 2px solid #aeafaf !important;outline-offset:0px !important; margin-left: 20px;margin-top: 20px; padding:-1000px;}`
   const fc = `.fc {margin: -2px;}`
+  const underline = `.fc-col-header-cell-cushion {text-decoration:none !important;}`
   return (
     <>
     <style>
      {css}
       {fc}
      {cal}
+     {underline}
       </style>
     <div id="cal">
       <FullCalendar
@@ -101,7 +103,7 @@ const cal = `#cal {border-radius: 20px; overflow: hidden;   outline: 2px solid #
 function renderDayHeaderContent(dayHeaderInfo) {
   const css = `font-size: 100em;`
   return (
-    <div style={{ fontSize: "2em", marginLeft: "-25px",color:"black",textDecoration: "underline"}}>
+    <div style={{ fontSize: "2em", marginLeft: "-25px",color:"black",textDecoration: "none"}}>
       {dayHeaderInfo.date.toLocaleDateString('ja-JP', { year: '2-digit', month: '2-digit', day: '2-digit' })}
     </div>
   )
